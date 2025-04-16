@@ -6,5 +6,5 @@ class CreateActionPlanUseCase:
     def __init__(self):
         self.repository = ActionPlanRepository()
 
-    async def execute(self, plans: ActionPlan) -> None:
-        await self.repository.createPlan(plans)
+    async def execute(self, plans: ActionPlan) -> ActionPlan:
+        return await self.repository.createPlan(plans)

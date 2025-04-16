@@ -6,5 +6,5 @@ class CreateActivityUseCase:
     def __init__(self):
         self.repository = ActivitiesRepository()
 
-    async def execute(self, activity: Activities) -> None:
-        await self.repository.createActivity(activity)
+    async def execute(self, activity: Activities) -> Activities:
+        return await self.repository.createActivity(activity)

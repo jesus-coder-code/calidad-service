@@ -1,5 +1,5 @@
 from typing import Any, Dict
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from Application.UseCases.ActivitiesUseCases.DeleteActivityUseCase import (
     DeleteActivityUseCase,
 )
@@ -14,7 +14,7 @@ from Application.UseCases.ActivitiesUseCases.UpdateActivityUseCase import (
 )
 from Domain.Entities.Activities import Activities
 from Infrastructure.utils.dependencies import verify_api_key
-from Application.Schemas.ActivitySchema import ActivitySchema
+from Application.Schemas.ActivitySchema import ActivitySchema, ActivitySchemaResponse
 
 router = APIRouter()
 
@@ -29,19 +29,25 @@ async def get_activities():
     return {"message": "success", "data": activities, "status": 200}
 
 
-@router.post("/activities/CreateActivity")
+@router.post("/activities/CreateActivity", response_model=ActivitySchemaResponse)
 async def create_activity(activity: ActivitySchema):
     activity_model = Activities(**activity.model_dump())
     use_case = CreateActivityUseCase()
-    await use_case.execute(activity_model)
-    return {"message": "actividad registrada correctamente"}
+    created_activity = await use_case.execute(activity_model)
+    return created_activity
 
 
 @router.put("/activities/UpdateActivity/{activity_id}")
 async def update_activity(activity_id: int, activity: ActivitySchema):
     activity_model = Activities(**activity.model_dump())
     use_case = UpdateActivityUseCase()
-    await use_case.execute(activity_id, activity_model)
+    update = await use_case.execute(activity_id, activity_model)
+
+    if update is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="actividad para actualizar no existe",
+        )
     return {"message": "actividad actualizada correctamente"}
 
 
@@ -50,7 +56,9 @@ async def delete_activity(activity_id: int):
     use_case = DeleteActivityUseCase()
     success = await use_case.execute(activity_id)
 
-    if not success:
-        raise HTTPException(status_code=404, detail="Actividad no encontrada")
+    if success is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Actividad no encontrada"
+        )
 
     return {"message": "Actividad eliminada correctamente"}

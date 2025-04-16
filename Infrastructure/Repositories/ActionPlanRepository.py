@@ -16,6 +16,8 @@ class ActionPlanRepository:
         async with get_session() as session:
             session.add(plans)
             await session.commit()
+            await session.refresh(plans)
+            return plans
 
     async def updatePlan(self, plan_id: int, plans: ActionPlan) -> ActionPlan:
         async with get_session() as session:

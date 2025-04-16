@@ -1,7 +1,7 @@
 from sqlmodel import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from Domain.Entities.Activities import Activities
-from typing import List
+from typing import List, Optional
 from Infrastructure.DB.Database import get_session
 
 
@@ -16,17 +16,19 @@ class ActivitiesRepository:
         async with get_session() as session:
             session.add(activities)
             await session.commit()
+            await session.refresh(activities)
+            return activities
 
     async def updateActivity(
         self, activity_id: int, activities: Activities
-    ) -> Activities:
+    ) -> Activities | None:
         async with get_session() as session:
             activity_found = await session.execute(
                 select(Activities).where(Activities.id == activity_id)
             )
-            exists_activity = activity_found.scalars().first()
+            exists_activity = activity_found.scalar_one_or_none()
 
-            if not exists_activity:
+            if exists_activity is None:
                 # raise ValueError("esta actividad no existe")
                 return None
 

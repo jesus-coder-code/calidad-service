@@ -30,8 +30,9 @@ async def get_action_plan():
 @router.post("/actionplan/CreateActionPlan")
 async def create_plan(plan: ActionPlan):
     use_case = CreateActionPlanUseCase()
-    await use_case.execute(plan)
-    return {"message": "plan de acción creado correctamente"}
+    created_plan = await use_case.execute(plan)
+    # return {"message": "plan de acción creado correctamente"}
+    return created_plan
 
 
 @router.put("/actionplan/UpdateActionPlan/{plan_id}")
