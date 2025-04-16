@@ -1,5 +1,8 @@
 from typing import Any, Dict
 from fastapi import APIRouter, Depends
+from Application.UseCases.ActionPlanUseCases.UpdateActionPlanUseCase import (
+    UpdateActionPlanUseCase,
+)
 from Application.UseCases.ActionPlanUseCases.GetActionPlanUseCase import (
     GetActionPlanUseCase,
 )
@@ -8,7 +11,7 @@ from Application.UseCases.ActionPlanUseCases.CreateActionPlanUseCase import (
 )
 from Domain.Entities.ActionPlan import ActionPlan
 from Infrastructure.utils.dependencies import verify_api_key
-from Application.Schemas.ActionPlanSchema import ActionPlanResponse
+from Application.Schemas.ActionPlanSchema import ActionPlanResponse, ActionPlanSchema
 
 router = APIRouter()
 
@@ -29,3 +32,11 @@ async def create_plan(plan: ActionPlan):
     use_case = CreateActionPlanUseCase()
     await use_case.execute(plan)
     return {"message": "plan de acción creado correctamente"}
+
+
+@router.put("/actionplan/UpdateActionPlan/{plan_id}")
+async def update_plan(plan_id: int, activity: ActionPlanSchema):
+    plan_model = ActionPlan(**activity.model_dump())
+    use_case = UpdateActionPlanUseCase()
+    await use_case.execute(plan_id, plan_model)
+    return {"message": "plan de acción actualizado correctamente"}
