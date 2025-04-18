@@ -8,6 +8,9 @@ from Application.UseCases.ComponentsUseCases.CreateComponentUseCase import (
 from Application.UseCases.ComponentsUseCases.GetComponentsUseCase import (
     GetComponentsUseCase,
 )
+from Application.UseCases.ComponentsUseCases.UpdateComponentsUseCase import (
+    UpdateComponentsUseCase,
+)
 from Domain.Entities.Components import Components
 
 
@@ -27,3 +30,18 @@ async def create_component(component: Components):
     use_case = CreateComponentUseCase()
     created_component = await use_case.execute(component)
     return created_component
+
+
+@router.put("/components/UpdateComponent/{component_id}")
+async def update_component(component_id: int, component: ComponentSchema):
+    component_model = Components(**component.model_dump())
+    use_case = UpdateComponentsUseCase()
+    update_component = await use_case.execute(component_id, component_model)
+
+    if update_component is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="este componente para actualizar no existe",
+        )
+
+    return {"message": "componente actualizado correctamente"}

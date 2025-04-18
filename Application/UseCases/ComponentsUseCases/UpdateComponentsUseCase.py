@@ -2,7 +2,7 @@ from Infrastructure.Repositories.ComponentsRepository import ComponentsRepositor
 from Domain.Entities.Components import Components
 
 
-class UpdateComponent:
+class UpdateComponentsUseCase:
     def __init__(self):
         self.repository = ComponentsRepository()
 

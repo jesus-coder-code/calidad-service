@@ -37,7 +37,7 @@ class ComponentsRepository:
                 if (
                     key != "id"
                     and key != "_sa_instance_state"
-                    and hasattr(exists_component)
+                    and hasattr(exists_component, key)
                 ):
                     setattr(exists_component, key, value)
 

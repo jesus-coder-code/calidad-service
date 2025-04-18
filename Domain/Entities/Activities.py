@@ -1,6 +1,7 @@
 from typing import Optional
 from sqlmodel import SQLModel, Field, Relationship
 from datetime import date
+from Domain.Enums.CicloEnum import CicloEnum
 
 # Usamos __future__.annotations para evitar problemas con referencias adelantadas
 
@@ -14,6 +15,7 @@ class Activities(SQLModel, table=True):
     fecha_final: date
     responsable: str
     meta: str
+    ciclo: CicloEnum = Field(default=CicloEnum.PLANEAR)
     plan_id: Optional[int] = Field(default=None, foreign_key="plan_de_accion.id")
     component_id: Optional[int] = Field(default=None, foreign_key="componentes.id")
 
