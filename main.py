@@ -7,6 +7,7 @@ from WebApi.Controllers import (
     ActionPlanController,
     AuthController,
     ActivitiesController,
+    ComponentsController,
 )
 import uvicorn
 
@@ -35,6 +36,7 @@ app.add_middleware(
 app.include_router(AuthController.router, prefix="/api", tags=["Login"])
 app.include_router(ActivitiesController.router, prefix="/api", tags=["Activities"])
 app.include_router(ActionPlanController.router, prefix="/api", tags=["Action Plans"])
+app.include_router(ComponentsController.router, prefix="/api", tags=["Components"])
 
 # Punto de entrada de la aplicación
 if __name__ == "__main__":

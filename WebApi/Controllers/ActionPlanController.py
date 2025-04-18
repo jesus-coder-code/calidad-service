@@ -1,5 +1,5 @@
 from typing import Any, Dict
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from Application.UseCases.ActionPlanUseCases.UpdateActionPlanUseCase import (
     UpdateActionPlanUseCase,
 )
@@ -31,7 +31,6 @@ async def get_action_plan():
 async def create_plan(plan: ActionPlan):
     use_case = CreateActionPlanUseCase()
     created_plan = await use_case.execute(plan)
-    # return {"message": "plan de acción creado correctamente"}
     return created_plan
 
 
@@ -39,5 +38,12 @@ async def create_plan(plan: ActionPlan):
 async def update_plan(plan_id: int, activity: ActionPlanSchema):
     plan_model = ActionPlan(**activity.model_dump())
     use_case = UpdateActionPlanUseCase()
-    await use_case.execute(plan_id, plan_model)
+    update_plan = await use_case.execute(plan_id, plan_model)
+
+    if update_plan is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="este plan para actualizar no existe",
+        )
+
     return {"message": "plan de acción actualizado correctamente"}

@@ -10,6 +10,7 @@ class ActivitySchema(BaseModel):
     responsable: str
     meta: str
     plan_id: int
+    component_id: int
 
     class Config:
         from_attributes = True
@@ -23,6 +24,7 @@ class ActivitySchemaResponse(BaseModel):
     responsable: str
     meta: str
     plan_id: int
+    component_id: int
 
     class Config:
         from_attributes = True

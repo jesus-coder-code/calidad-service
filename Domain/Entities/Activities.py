@@ -15,5 +15,7 @@ class Activities(SQLModel, table=True):
     responsable: str
     meta: str
     plan_id: Optional[int] = Field(default=None, foreign_key="plan_de_accion.id")
+    component_id: Optional[int] = Field(default=None, foreign_key="componentes.id")
 
     plan: Optional["ActionPlan"] = Relationship(back_populates="actividades")  # type: ignore
+    component: Optional["Components"] = Relationship(back_populates="actividades")  # type: ignore

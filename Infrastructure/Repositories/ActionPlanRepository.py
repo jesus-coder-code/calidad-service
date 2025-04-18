@@ -12,7 +12,7 @@ class ActionPlanRepository:
             result = await session.execute(statement)
             return result.scalars().all()
 
-    async def createPlan(self, plans: ActionPlan) -> ActionPlan:
+    async def createPlan(self, plans: ActionPlan) -> ActionPlan | None:
         async with get_session() as session:
             session.add(plans)
             await session.commit()
@@ -26,8 +26,8 @@ class ActionPlanRepository:
             )
             existing_plan = plan_exists.scalars().first()
 
-            if not existing_plan:
-                raise ValueError("Este plan de acción no existe")
+            if existing_plan is None:
+                return None
 
             for key, value in plans.__dict__.items():
                 if (

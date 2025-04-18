@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sess
 import os
 from dotenv import load_dotenv
 from contextlib import asynccontextmanager
-from Domain.Entities import Activities, ActionPlan
+from Domain.Entities import Activities, ActionPlan, Components
 
 load_dotenv()
 
