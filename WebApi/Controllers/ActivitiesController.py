@@ -15,6 +15,8 @@ from Application.UseCases.ActivitiesUseCases.UpdateActivityUseCase import (
 from Domain.Entities.Activities import Activities
 from Infrastructure.utils.dependencies import verify_api_key
 from Application.Schemas.ActivitySchema import ActivitySchema, ActivitySchemaResponse
+from Infrastructure.Repositories.ActivitiesRepository import ActivitiesRepository
+
 
 router = APIRouter()
 
@@ -24,23 +26,26 @@ router = APIRouter()
     response_model=Dict[str, Any],
 )
 async def get_activities():
-    use_case = GetActivitiesUseCase()
+    activitiesRepository = ActivitiesRepository()
+    use_case = GetActivitiesUseCase(activitiesRepository)
     activities = await use_case.execute()
     return {"message": "success", "data": activities, "status": 200}
 
 
 @router.post("/activities/CreateActivity", response_model=ActivitySchemaResponse)
 async def create_activity(activity: ActivitySchema):
+    activitiesRepository = ActivitiesRepository()
     activity_model = Activities(**activity.model_dump())
-    use_case = CreateActivityUseCase()
+    use_case = CreateActivityUseCase(activitiesRepository)
     created_activity = await use_case.execute(activity_model)
     return created_activity
 
 
 @router.put("/activities/UpdateActivity/{activity_id}")
 async def update_activity(activity_id: int, activity: ActivitySchema):
+    activitiesRepository = ActivitiesRepository()
     activity_model = Activities(**activity.model_dump())
-    use_case = UpdateActivityUseCase()
+    use_case = UpdateActivityUseCase(activitiesRepository)
     update = await use_case.execute(activity_id, activity_model)
 
     if update is None:
@@ -53,7 +58,8 @@ async def update_activity(activity_id: int, activity: ActivitySchema):
 
 @router.delete("/activities/DeleteActivity/{activity_id}")
 async def delete_activity(activity_id: int):
-    use_case = DeleteActivityUseCase()
+    activitiesRepository = ActivitiesRepository()
+    use_case = DeleteActivityUseCase(activitiesRepository)
     success = await use_case.execute(activity_id)
 
     if success is None:

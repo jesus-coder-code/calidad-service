@@ -20,3 +20,9 @@ class ComponentResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class ComponentSchemaResponse(BaseModel):
+    id: Optional[int]
+    nombre: str
+    subcomponente: str

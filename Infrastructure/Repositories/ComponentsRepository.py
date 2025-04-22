@@ -3,9 +3,10 @@ from sqlalchemy.orm import selectinload
 from sqlmodel import select
 from Domain.Entities.Components import Components
 from Infrastructure.DB.Database import get_session
+from Domain.Interfaces.IComponentsRepository import IComponentsRepository
 
 
-class ComponentsRepository:
+class ComponentsRepository(IComponentsRepository):
     async def getAllComponents(self) -> List[Components]:
         async with get_session() as session:
             statement = statement = select(Components).options(

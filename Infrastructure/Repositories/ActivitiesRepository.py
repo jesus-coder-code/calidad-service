@@ -3,9 +3,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from Domain.Entities.Activities import Activities
 from typing import List, Optional
 from Infrastructure.DB.Database import get_session
+from Domain.Interfaces.IActivitiesRepository import IActivitiesRepository
 
 
-class ActivitiesRepository:
+class ActivitiesRepository(IActivitiesRepository):
     async def getAllActivities(self) -> List[Activities]:
         async with get_session() as session:
             statement = select(Activities)

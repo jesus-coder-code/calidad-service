@@ -20,3 +20,12 @@ class ActionPlanSchema(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class ActionPlanSchemaResponse(BaseModel):
+    id: Optional[int]
+    nombre: str
+    vigencia: int
+
+    class Config:
+        from_attributes = True

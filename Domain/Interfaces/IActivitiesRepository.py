@@ -1,0 +1,24 @@
+from abc import ABC, abstractmethod
+from typing import List
+
+from Domain.Entities.Activities import Activities
+
+
+class IActivitiesRepository(ABC):
+    @abstractmethod
+    async def getAllActivities(self) -> List[Activities]:
+        pass
+
+    @abstractmethod
+    async def createActivity(self, activities: Activities) -> Activities:
+        pass
+
+    @abstractmethod
+    async def updateActivity(
+        self, activity_id: int, activities: Activities
+    ) -> Activities | None:
+        pass
+
+    @abstractmethod
+    async def deleteActivity(self, activity_id: int) -> bool:
+        pass

@@ -3,9 +3,10 @@ from sqlmodel import select
 from sqlalchemy.orm import selectinload
 from Domain.Entities.ActionPlan import ActionPlan
 from Infrastructure.DB.Database import get_session
+from Domain.Interfaces.IActionPlanRepository import IActionPlanRepository
 
 
-class ActionPlanRepository:
+class ActionPlanRepository(IActionPlanRepository):
     async def getAllPlans(self) -> List[ActionPlan]:
         async with get_session() as session:
             statement = select(ActionPlan).options(selectinload(ActionPlan.actividades))
