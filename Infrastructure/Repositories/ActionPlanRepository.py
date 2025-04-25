@@ -40,3 +40,17 @@ class ActionPlanRepository(IActionPlanRepository):
 
             await session.commit()
             return existing_plan
+
+    async def deletePlan(self, plan_id: int) -> bool:
+        async with get_session() as session:
+            result = await session.execute(
+                select(ActionPlan).where(ActionPlan.id == plan_id)
+            )
+            plan = result.scalars().first()
+
+            if plan is None:
+                return False
+
+            await session.delete(plan)
+            await session.commit()
+            return True

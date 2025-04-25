@@ -2,6 +2,8 @@ from typing import Optional
 from sqlmodel import SQLModel, Field, Relationship
 from datetime import date
 from Domain.Enums.CicloEnum import CicloEnum
+from sqlalchemy import Column, ForeignKey
+from sqlalchemy.sql.sqltypes import Integer
 
 # Usamos __future__.annotations para evitar problemas con referencias adelantadas
 
@@ -16,8 +18,14 @@ class Activities(SQLModel, table=True):
     responsable: str
     meta: str
     ciclo: CicloEnum = Field(default=CicloEnum.PLANEAR)
-    plan_id: Optional[int] = Field(default=None, foreign_key="plan_de_accion.id")
-    component_id: Optional[int] = Field(default=None, foreign_key="componentes.id")
+    plan_id: Optional[int] = Field(
+        default=None,
+        sa_column=Column(Integer, ForeignKey("plan_de_accion.id", ondelete="SET NULL")),
+    )
+    component_id: Optional[int] = Field(
+        default=None,
+        sa_column=Column(Integer, ForeignKey("componentes.id", ondelete="SET NULL")),
+    )
 
     plan: Optional["ActionPlan"] = Relationship(back_populates="actividades")  # type: ignore
     component: Optional["Components"] = Relationship(back_populates="actividades")  # type: ignore

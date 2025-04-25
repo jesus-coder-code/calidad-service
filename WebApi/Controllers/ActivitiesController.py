@@ -62,7 +62,7 @@ async def delete_activity(activity_id: int):
     use_case = DeleteActivityUseCase(activitiesRepository)
     success = await use_case.execute(activity_id)
 
-    if success is None:
+    if success is False:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Actividad no encontrada"
         )

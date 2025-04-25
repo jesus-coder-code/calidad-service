@@ -9,6 +9,9 @@ from Application.Schemas.ComponentSchema import (
 from Application.UseCases.ComponentsUseCases.CreateComponentUseCase import (
     CreateComponentUseCase,
 )
+from Application.UseCases.ComponentsUseCases.DeleteComponentUseCase import (
+    DeleteComponentUseCase,
+)
 from Application.UseCases.ComponentsUseCases.GetComponentsUseCase import (
     GetComponentsUseCase,
 )
@@ -23,7 +26,7 @@ router = APIRouter()
 
 
 @router.get("/components/GetComponents", response_model=Dict[str, Any])
-async def get_action_plan():
+async def get_component():
     componentsRepository = ComponentsRepository()
     use_case = GetComponentsUseCase(componentsRepository)
     components = await use_case.execute()
@@ -54,3 +57,17 @@ async def update_component(component_id: int, component: ComponentSchema):
         )
 
     return {"message": "componente actualizado correctamente"}
+
+
+@router.delete("/components/DeleteComponent/{component_id}")
+async def delete_component(component_id: int):
+    componentRepository = ComponentsRepository()
+    use_case = DeleteComponentUseCase(componentRepository)
+    success = await use_case.execute(component_id)
+
+    if success is False:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="este componente no existe"
+        )
+
+    return {"message": "componente eliminado correctamente"}

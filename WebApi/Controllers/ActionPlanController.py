@@ -1,5 +1,8 @@
 from typing import Any, Dict
 from fastapi import APIRouter, Depends, HTTPException, status
+from Application.UseCases.ActionPlanUseCases.DeleteActionPlanUseCase import (
+    DeleteActionPlanUseCase,
+)
 from Application.UseCases.ActionPlanUseCases.UpdateActionPlanUseCase import (
     UpdateActionPlanUseCase,
 )
@@ -56,3 +59,17 @@ async def update_plan(plan_id: int, activity: ActionPlanSchema):
         )
 
     return {"message": "plan de acción actualizado correctamente"}
+
+
+@router.delete("/actionPlan/DelecteActionPlan/{plan_id}")
+async def delete_plan(plan_id: int):
+    actionPlanRepository = ActionPlanRepository()
+    use_case = DeleteActionPlanUseCase(actionPlanRepository)
+    success = await use_case.execute(plan_id)
+
+    if success is False:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="plan de accion no encontrado"
+        )
+
+    return {"message": "plan de acción eliminado correctamente"}

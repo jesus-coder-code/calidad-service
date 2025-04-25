@@ -51,7 +51,7 @@ class ActivitiesRepository(IActivitiesRepository):
             )
             activity = result.scalars().first()
 
-            if not activity:
+            if activity is None:
                 return False
 
             await session.delete(activity)

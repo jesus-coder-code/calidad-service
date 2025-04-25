@@ -17,3 +17,7 @@ class IComponentsRepository(ABC):
         self, component_id: int, components: Components
     ) -> Components | None:
         pass
+
+    @abstractmethod
+    async def deleteComponent(self, component_id: int) -> bool:
+        pass

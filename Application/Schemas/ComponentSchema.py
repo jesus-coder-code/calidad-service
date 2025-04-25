@@ -26,3 +26,6 @@ class ComponentSchemaResponse(BaseModel):
     id: Optional[int]
     nombre: str
     subcomponente: str
+
+    class Config:
+        from_attributes = True

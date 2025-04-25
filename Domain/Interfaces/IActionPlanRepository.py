@@ -15,3 +15,7 @@ class IActionPlanRepository(ABC):
     @abstractmethod
     async def updatePlan(self, plan_id: int, plans: ActionPlan) -> ActionPlan:
         pass
+
+    @abstractmethod
+    async def deletePlan(self, plan_id: int) -> bool:
+        pass

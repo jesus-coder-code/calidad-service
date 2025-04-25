@@ -44,3 +44,17 @@ class ComponentsRepository(IComponentsRepository):
 
             await session.commit()
             return exists_component
+
+    async def deleteComponent(self, component_id: int) -> bool:
+        async with get_session() as session:
+            result = await session.execute(
+                select(Components).where(Components.id == component_id)
+            )
+            component = result.scalars().first()
+
+            if component is None:
+                return False
+
+            await session.delete(component)
+            await session.commit()
+            return True
