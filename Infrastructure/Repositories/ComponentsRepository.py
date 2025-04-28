@@ -10,7 +10,7 @@ class ComponentsRepository(IComponentsRepository):
     async def getAllComponents(self) -> List[Components]:
         async with get_session() as session:
             statement = statement = select(Components).options(
-                selectinload(Components.actividades)
+                selectinload(Components.subcomponentes)
             )
             result = await session.execute(statement)
             return result.scalars().all()

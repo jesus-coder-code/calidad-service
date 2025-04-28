@@ -22,10 +22,10 @@ class Activities(SQLModel, table=True):
         default=None,
         sa_column=Column(Integer, ForeignKey("plan_de_accion.id", ondelete="SET NULL")),
     )
-    component_id: Optional[int] = Field(
+    subcomponent_id: Optional[int] = Field(
         default=None,
-        sa_column=Column(Integer, ForeignKey("componentes.id", ondelete="SET NULL")),
+        sa_column=Column(Integer, ForeignKey("subcomponentes.id", ondelete="SET NULL")),
     )
 
     plan: Optional["ActionPlan"] = Relationship(back_populates="actividades")  # type: ignore
-    component: Optional["Components"] = Relationship(back_populates="actividades")  # type: ignore
+    subcomponent: Optional["Subcomponents"] = Relationship(back_populates="actividades")  # type: ignore

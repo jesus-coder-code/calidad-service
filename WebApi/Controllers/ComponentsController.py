@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from Application.Schemas.ComponentSchema import (
     ComponentResponse,
     ComponentSchema,
-    ComponentSchemaResponse,
+    ComponentSchemaBaseResponse,
 )
 from Application.UseCases.ComponentsUseCases.CreateComponentUseCase import (
     CreateComponentUseCase,
@@ -34,7 +34,7 @@ async def get_component():
     return {"message": "success", "data": data, "status": 200}
 
 
-@router.post("/components/CreateComponent", response_model=ComponentSchemaResponse)
+@router.post("/components/CreateComponent", response_model=ComponentSchemaBaseResponse)
 async def create_component(component: ComponentSchema):
     component_model = Components(**component.model_dump())
     componentsRepository = ComponentsRepository()

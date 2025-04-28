@@ -13,7 +13,7 @@ class ActivitySchema(BaseModel):
     meta: str
     ciclo: CicloEnum
     plan_id: int
-    component_id: int
+    subcomponent_id: int
 
     class Config:
         from_attributes = True
@@ -29,7 +29,7 @@ class ActivitySchemaResponse(BaseModel):
     meta: str
     ciclo: CicloEnum
     plan_id: int
-    component_id: int
+    subcomponent_id: int
 
     class Config:
         from_attributes = True

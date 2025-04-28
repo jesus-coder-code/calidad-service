@@ -1,29 +1,31 @@
-from typing import List, Optional
 from pydantic import BaseModel
+from typing import List, Optional
 
 from Application.Schemas.ActivitySchema import ActivitySchemaResponse
-from Application.Schemas.SubcomponentSchema import SubcomponentSchemaResponse
 
 
-class ComponentSchema(BaseModel):
+class SubcomponentSchema(BaseModel):
     nombre: str
+    component_id: int
 
     class Config:
         from_attributes = True
 
 
-class ComponentResponse(BaseModel):
+class SubcomponentSchemaResponse(BaseModel):
     id: Optional[int]
     nombre: str
-    subcomponentes: List[SubcomponentSchemaResponse] = []
+    component_id: int
 
     class Config:
         from_attributes = True
 
 
-class ComponentSchemaBaseResponse(BaseModel):
+class SubcomponentBaseResponse(BaseModel):
     id: Optional[int]
     nombre: str
+    component_id: int
+    actividades: List[ActivitySchemaResponse] = []
 
     class Config:
         from_attributes = True

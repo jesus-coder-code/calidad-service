@@ -1,7 +1,6 @@
 from typing import List, Optional
 from sqlmodel import Field, Relationship, SQLModel
-
-from Domain.Entities.Activities import Activities
+from Domain.Entities.Subcomponents import Subcomponents
 
 
 class Components(SQLModel, table=True):
@@ -9,6 +8,5 @@ class Components(SQLModel, table=True):
 
     id: Optional[int] = Field(default=None, primary_key=True)
     nombre: str
-    subcomponente: str
 
-    actividades: List["Activities"] = Relationship(back_populates="component")
+    subcomponentes: List["Subcomponents"] = Relationship(back_populates="component")
