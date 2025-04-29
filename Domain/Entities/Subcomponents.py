@@ -14,5 +14,5 @@ class Subcomponents(SQLModel, table=True):
         sa_column=Column(Integer, ForeignKey("componentes.id", ondelete="SET NULL")),
     )
 
-    actividades: List["Activities"] = Relationship(back_populates="subcomponent")  # type: ignore
-    component: Optional["Components"] = Relationship(back_populates="subcomponentes")  # type: ignore
+    actividades: List["Activities"] = Relationship(back_populates="subcomponente")  # type: ignore
+    componente: Optional["Components"] = Relationship(back_populates="subcomponentes")  # type: ignore

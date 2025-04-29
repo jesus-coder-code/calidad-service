@@ -28,4 +28,4 @@ class Activities(SQLModel, table=True):
     )
 
     plan: Optional["ActionPlan"] = Relationship(back_populates="actividades")  # type: ignore
-    subcomponent: Optional["Subcomponents"] = Relationship(back_populates="actividades")  # type: ignore
+    subcomponente: Optional["Subcomponents"] = Relationship(back_populates="actividades")  # type: ignore
