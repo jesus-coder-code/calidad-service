@@ -1,5 +1,6 @@
 from Domain.Interfaces.IPoliticsRepository import IPoliticsRepository
 from Domain.Entities.Politics import Politics
+from Domain.Entities.Components import Components
 from typing import List
 from Infrastructure.DB.Database import get_session
 from sqlmodel import select
@@ -10,7 +11,10 @@ class PoliticsRepository(IPoliticsRepository):
     async def getAllPolitics(self) -> List[Politics]:
         async with get_session() as session:
             statement = select(Politics).options(
-                selectinload(Politics.planes), selectinload(Politics.componentes)
+                selectinload(Politics.planes),
+                selectinload(Politics.componentes).selectinload(
+                    Components.subcomponentes
+                ),
             )
             result = await session.execute(statement)
             return result.scalars().all()
