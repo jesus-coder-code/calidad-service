@@ -7,6 +7,7 @@ from Application.Schemas.SubcomponentSchema import SubcomponentSchemaResponse
 
 class ComponentSchema(BaseModel):
     nombre: str
+    politica_id: int
 
     class Config:
         from_attributes = True
@@ -15,6 +16,7 @@ class ComponentSchema(BaseModel):
 class ComponentResponse(BaseModel):
     id: Optional[int]
     nombre: str
+    politica_id: int
     subcomponentes: List[SubcomponentSchemaResponse] = []
 
     class Config:
@@ -24,6 +26,7 @@ class ComponentResponse(BaseModel):
 class ComponentSchemaBaseResponse(BaseModel):
     id: Optional[int]
     nombre: str
+    politica_id: int
 
     class Config:
         from_attributes = True

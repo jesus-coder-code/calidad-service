@@ -1,4 +1,6 @@
 from typing import List, Optional
+from sqlalchemy import Column, ForeignKey
+from sqlalchemy.sql.sqltypes import Integer
 from sqlmodel import SQLModel, Field, Relationship
 from datetime import date
 from Domain.Entities.Activities import Activities
@@ -12,4 +14,10 @@ class ActionPlan(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     nombre: str
     vigencia: int
+    politica_id: Optional[int] = Field(
+        default=None,
+        sa_column=Column(Integer, ForeignKey("politicas.id", ondelete="SET NULL")),
+    )
+
     actividades: List["Activities"] = Relationship(back_populates="plan")
+    politica: Optional["Politics"] = Relationship(back_populates="planes")  # type: ignore

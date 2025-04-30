@@ -17,6 +17,7 @@ class ActionPlanResponse(BaseModel):
 class ActionPlanSchema(BaseModel):
     nombre: str
     vigencia: int
+    politica_id: int
 
     class Config:
         from_attributes = True
@@ -26,6 +27,7 @@ class ActionPlanSchemaResponse(BaseModel):
     id: Optional[int]
     nombre: str
     vigencia: int
+    politica_id: int
 
     class Config:
         from_attributes = True
