@@ -71,4 +71,4 @@ async def delete_subcomponent(subcomponent_id: int):
             status_code=status.HTTP_404_NOT_FOUND, detail="este subcomponente no existe"
         )
 
-    return {"message": "Actividad eliminada correctamente"}
+    return {"message": "Subcomponente eliminado correctamente"}
