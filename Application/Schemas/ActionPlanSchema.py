@@ -8,6 +8,7 @@ class ActionPlanResponse(BaseModel):
     id: Optional[int]
     nombre: str
     vigencia: int
+    politica_id: int
     actividades: List[ActivitySchemaResponse] = []
 
     class Config:
