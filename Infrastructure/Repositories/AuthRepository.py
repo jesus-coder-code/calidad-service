@@ -14,11 +14,12 @@ class AuthRepository(IAuthRepository):
 
     async def authenticate(self, auth_request: AuthRequest) -> TokenResponse:
         auth_data = {
-            "grant_type": "password",
+            "grant_type": "client_credentials",
             "client_id": self.client_id,
             "client_secret": self.client_secret,
             "username": auth_request.username,
             "password": auth_request.password,
+            "scope": auth_request.scope,
         }
 
         headers = {

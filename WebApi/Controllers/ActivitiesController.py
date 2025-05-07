@@ -9,6 +9,9 @@ from Application.UseCases.ActivitiesUseCases.GetActivitiesUseCase import (
 from Application.UseCases.ActivitiesUseCases.CreateActivityUseCase import (
     CreateActivityUseCase,
 )
+from Application.UseCases.ActivitiesUseCases.GetActivityByIdUseCase import (
+    GetActivityByIdUseCase,
+)
 from Application.UseCases.ActivitiesUseCases.UpdateActivityUseCase import (
     UpdateActivityUseCase,
 )
@@ -68,3 +71,20 @@ async def delete_activity(activity_id: int):
         )
 
     return {"message": "Actividad eliminada correctamente"}
+
+
+@router.get(
+    "/activities/GetActivityById",
+    response_model=Dict[str, Any],
+)
+async def get_activities(activity_id: int):
+    activitiesRepository = ActivitiesRepository()
+    use_case = GetActivityByIdUseCase(activitiesRepository)
+    activity = await use_case.execute(activity_id)
+
+    if activity is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Esta actividad no existe"
+        )
+
+    return {"message": "success", "data": activity, "status": 200}

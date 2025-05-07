@@ -58,3 +58,6 @@ class ComponentsRepository(IComponentsRepository):
             await session.delete(component)
             await session.commit()
             return True
+
+    async def getComponentById(self, component_id: int) -> Components | None:
+        raise NotImplementedError

@@ -22,3 +22,7 @@ class IActivitiesRepository(ABC):
     @abstractmethod
     async def deleteActivity(self, activity_id: int) -> bool:
         pass
+
+    @abstractmethod
+    async def getActivityById(self, activity_id: int) -> Activities | None:
+        pass

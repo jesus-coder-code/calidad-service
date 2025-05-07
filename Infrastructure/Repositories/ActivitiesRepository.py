@@ -57,3 +57,15 @@ class ActivitiesRepository(IActivitiesRepository):
             await session.delete(activity)
             await session.commit()
             return True
+
+    async def getActivityById(self, activity_id: int) -> Activities | None:
+        async with get_session() as session:
+            statement = await session.execute(
+                select(Activities).where(Activities.id == activity_id)
+            )
+            existing_activity = statement.scalar_one_or_none()
+
+            if existing_activity is None:
+                return None
+
+            return existing_activity

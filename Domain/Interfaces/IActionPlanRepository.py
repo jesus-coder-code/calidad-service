@@ -19,3 +19,7 @@ class IActionPlanRepository(ABC):
     @abstractmethod
     async def deletePlan(self, plan_id: int) -> bool:
         pass
+
+    @abstractmethod
+    async def getPlanById(self, plan_id: int) -> ActionPlan | None:
+        pass

@@ -51,3 +51,6 @@ class PoliticsRepository(IPoliticsRepository):
 
     async def deletePolitic(self, politic_id: int) -> bool:
         raise NotImplementedError
+
+    async def getPoliticById(self, politic_id: int) -> Politics | None:
+        raise NotImplementedError

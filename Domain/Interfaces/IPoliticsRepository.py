@@ -21,3 +21,7 @@ class IPoliticsRepository(ABC):
     @abstractmethod
     async def deletePolitic(self, politic_id: int) -> bool:
         pass
+
+    @abstractmethod
+    async def getPoliticById(self, politic_id: int) -> Politics | None:
+        pass

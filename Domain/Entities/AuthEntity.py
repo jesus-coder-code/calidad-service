@@ -2,10 +2,12 @@ from typing import Dict
 from pydantic import BaseModel, ConfigDict
 
 
-#se define la entidad para el login y los tipos de datos que llegarán a esta
+# se define la entidad para el login y los tipos de datos que llegarán a esta
 class AuthRequest(BaseModel):
     username: str
     password: str
+    scope: str = "openid"
+
 
 #
 class TokenResponse(BaseModel):

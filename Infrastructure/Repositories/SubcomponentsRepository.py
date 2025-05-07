@@ -58,3 +58,6 @@ class SubcomponentsRepository(ISubcomponentsRepository):
             await session.delete(subcomponent)
             await session.commit()
             return True
+
+    async def getSubcomponentById(self, subcomponent_id: int) -> Subcomponents | None:
+        raise NotImplementedError

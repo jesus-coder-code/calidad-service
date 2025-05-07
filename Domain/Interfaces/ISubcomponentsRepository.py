@@ -21,3 +21,7 @@ class ISubcomponentsRepository(ABC):
     @abstractmethod
     async def deleteSubcomponent(self, subcomponent_id: int) -> bool:
         pass
+
+    @abstractmethod
+    async def getSubcomponentById(self, subcomponent_id: int) -> Subcomponents | None:
+        pass

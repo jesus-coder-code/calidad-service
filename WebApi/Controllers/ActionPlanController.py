@@ -3,6 +3,9 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from Application.UseCases.ActionPlanUseCases.DeleteActionPlanUseCase import (
     DeleteActionPlanUseCase,
 )
+from Application.UseCases.ActionPlanUseCases.GetActionPlanByIdUseCase import (
+    GetActionPlanByIdUseCase,
+)
 from Application.UseCases.ActionPlanUseCases.UpdateActionPlanUseCase import (
     UpdateActionPlanUseCase,
 )
@@ -73,3 +76,21 @@ async def delete_plan(plan_id: int):
         )
 
     return {"message": "plan de acción eliminado correctamente"}
+
+
+@router.get(
+    "/actionplan/GetActionPlanById",
+    response_model=Dict[str, Any],
+)
+async def get_action_plan_by_id(plan_id: int):
+    actionPlanRepository = ActionPlanRepository()
+    use_case = GetActionPlanByIdUseCase(actionPlanRepository)
+    plan = await use_case.execute(plan_id)
+
+    if plan is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="este plan de acción no existe",
+        )
+    data = ActionPlanResponse.model_validate(plan)
+    return {"message": "success", "data": data, "status": 200}

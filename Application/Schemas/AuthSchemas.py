@@ -5,6 +5,7 @@ from typing import Any, Dict
 class AuthRequestSchema(BaseModel):
     username: str
     password: str
+    scope: str = "openid"
 
 
 class TokenResponseSchema(BaseModel):
