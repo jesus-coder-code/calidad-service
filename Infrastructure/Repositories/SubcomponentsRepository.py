@@ -60,4 +60,15 @@ class SubcomponentsRepository(ISubcomponentsRepository):
             return True
 
     async def getSubcomponentById(self, subcomponent_id: int) -> Subcomponents | None:
-        raise NotImplementedError
+        async with get_session() as session:
+            statement = await session.execute(
+                select(Subcomponents)
+                .options(selectinload(Subcomponents.actividades))
+                .where(Subcomponents.id == subcomponent_id)
+            )
+            subcomponent = statement.scalar_one_or_none()
+
+            if subcomponent is None:
+                return None
+
+            return subcomponent

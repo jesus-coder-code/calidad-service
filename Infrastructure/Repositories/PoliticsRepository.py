@@ -53,4 +53,21 @@ class PoliticsRepository(IPoliticsRepository):
         raise NotImplementedError
 
     async def getPoliticById(self, politic_id: int) -> Politics | None:
-        raise NotImplementedError
+        async with get_session() as session:
+            statement = await session.execute(
+                select(Politics)
+                .options(
+                    selectinload(Politics.planes),
+                    selectinload(Politics.componentes).selectinload(
+                        Components.subcomponentes
+                    ),
+                )
+                .where(Politics.id == politic_id)
+            )
+
+            politic = statement.scalar_one_or_none()
+
+            if politic is None:
+                return None
+
+            return politic

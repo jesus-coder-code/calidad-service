@@ -76,8 +76,10 @@ async def delete_component(component_id: int):
     return {"message": "componente eliminado correctamente"}
 
 
-@router.get("/components/GetComponents/{component_id}", response_model=Dict[str, Any])
-async def get_component(component_id: int):
+@router.get(
+    "/components/GetComponentById/{component_id}", response_model=Dict[str, Any]
+)
+async def get_component_by_id(component_id: int):
     componentsRepository = ComponentsRepository()
     use_case = GetComponentByIdUseCase(componentsRepository)
     component = await use_case.execute(component_id)

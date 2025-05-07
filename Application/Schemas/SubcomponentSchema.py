@@ -24,7 +24,7 @@ class SubcomponentSchemaResponse(BaseModel):
 class SubcomponentBaseResponse(BaseModel):
     id: Optional[int]
     nombre: str
-    component_id: int
+    component_id: Optional[int]
     actividades: List[ActivitySchemaResponse] = []
 
     class Config:

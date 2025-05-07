@@ -5,6 +5,9 @@ from Application.Schemas.SubcomponentSchema import (
     SubcomponentSchema,
     SubcomponentSchemaResponse,
 )
+from Application.UseCases.SubcomponentsUseCases.GetSubcomponentByIdUseCase import (
+    GetSubcomponentByIdUseCase,
+)
 from Application.UseCases.SubcomponentsUseCases.GetSubcomponentsUseCase import (
     GetSubcomponentsUseCase,
 )
@@ -72,3 +75,22 @@ async def delete_subcomponent(subcomponent_id: int):
         )
 
     return {"message": "Subcomponente eliminado correctamente"}
+
+
+@router.get(
+    "/subcomponents/GetSubcomponentById/{subcomponent_id}",
+    response_model=Dict[str, Any],
+)
+async def get_subcomponent_by_id(subcomponent_id: int):
+    subcomponentsRepository = SubcomponentsRepository()
+    use_case = GetSubcomponentByIdUseCase(subcomponentsRepository)
+    subcomponent = await use_case.execute(subcomponent_id)
+
+    if subcomponent is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="este subcomponente no existe",
+        )
+
+    data = SubcomponentBaseResponse.model_validate(subcomponent)
+    return {"message": "success", "data": data, "status": 200}

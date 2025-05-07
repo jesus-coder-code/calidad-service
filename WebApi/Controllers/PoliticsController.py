@@ -1,4 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from Application.UseCases.PoliticsUseCases.GetPoliticByIdUseCase import (
+    GetPoliticByIdUseCase,
+)
 from Infrastructure.Repositories.PoliticsRepository import PoliticsRepository
 from Application.UseCases.PoliticsUseCases.GetPoliticsUseCase import GetPoliticsUseCase
 from Application.UseCases.PoliticsUseCases.CreatePoliticUseCase import (
@@ -54,3 +57,18 @@ async def update_politic(politic_id: int, politic: PoliticSchemaRequest):
 """@router.delete("/politics/DeletePolitic")
 async def delete_politic():
     return {"message": "delete politic"}"""
+
+
+@router.get("/politics/GetPoliticById/{politic_id}")
+async def get_politics(politic_id: int):
+    politicsRepository = PoliticsRepository()
+    use_case = GetPoliticByIdUseCase(politicsRepository)
+    politic = await use_case.execute(politic_id)
+
+    if politic is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="esta politica no existe"
+        )
+
+    data = PoliticSchemaResponse.model_validate(politic)
+    return {"message": "success", "data": data, "status": 200}
