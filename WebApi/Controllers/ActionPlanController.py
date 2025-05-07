@@ -79,7 +79,7 @@ async def delete_plan(plan_id: int):
 
 
 @router.get(
-    "/actionplan/GetActionPlanById",
+    "/actionplan/GetActionPlanById/{plan_id}",
     response_model=Dict[str, Any],
 )
 async def get_action_plan_by_id(plan_id: int):

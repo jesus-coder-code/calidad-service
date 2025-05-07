@@ -74,10 +74,10 @@ async def delete_activity(activity_id: int):
 
 
 @router.get(
-    "/activities/GetActivityById",
+    "/activities/GetActivityById/{activity_id}",
     response_model=Dict[str, Any],
 )
-async def get_activities(activity_id: int):
+async def get_activity_by_id(activity_id: int):
     activitiesRepository = ActivitiesRepository()
     use_case = GetActivityByIdUseCase(activitiesRepository)
     activity = await use_case.execute(activity_id)

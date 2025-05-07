@@ -12,6 +12,9 @@ from Application.UseCases.ComponentsUseCases.CreateComponentUseCase import (
 from Application.UseCases.ComponentsUseCases.DeleteComponentUseCase import (
     DeleteComponentUseCase,
 )
+from Application.UseCases.ComponentsUseCases.GetComponentByIdUseCase import (
+    GetComponentByIdUseCase,
+)
 from Application.UseCases.ComponentsUseCases.GetComponentsUseCase import (
     GetComponentsUseCase,
 )
@@ -71,3 +74,18 @@ async def delete_component(component_id: int):
         )
 
     return {"message": "componente eliminado correctamente"}
+
+
+@router.get("/components/GetComponents/{component_id}", response_model=Dict[str, Any])
+async def get_component(component_id: int):
+    componentsRepository = ComponentsRepository()
+    use_case = GetComponentByIdUseCase(componentsRepository)
+    component = await use_case.execute(component_id)
+
+    if component is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="este componente no existe"
+        )
+    data = ComponentResponse.model_validate(component)
+
+    return {"message": "success", "data": data, "status": 200}

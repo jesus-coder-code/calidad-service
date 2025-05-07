@@ -6,5 +6,5 @@ class GetActivityByIdUseCase:
     def __init__(self, activitiesRepository: IActivitiesRepository):
         self.repository = activitiesRepository
 
-    async def execute(self, activity_id: int) -> Activities:
+    async def execute(self, activity_id: int) -> Activities | None:
         return await self.repository.getActivityById(activity_id)

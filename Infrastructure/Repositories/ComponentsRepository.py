@@ -60,4 +60,16 @@ class ComponentsRepository(IComponentsRepository):
             return True
 
     async def getComponentById(self, component_id: int) -> Components | None:
-        raise NotImplementedError
+        async with get_session() as session:
+            statement = await session.execute(
+                select(Components)
+                .options(selectinload(Components.subcomponentes))
+                .where(Components.id == component_id)
+            )
+
+            component = statement.scalar_one_or_none()
+
+            if component is None:
+                return None
+
+            return component
