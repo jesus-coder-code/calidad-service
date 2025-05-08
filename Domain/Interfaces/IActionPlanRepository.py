@@ -23,3 +23,7 @@ class IActionPlanRepository(ABC):
     @abstractmethod
     async def getPlanById(self, plan_id: int) -> ActionPlan | None:
         pass
+
+    @abstractmethod
+    async def getPlanByName(self, plan_name: str) -> ActionPlan | None:
+        pass

@@ -69,3 +69,18 @@ class ActionPlanRepository(IActionPlanRepository):
                 return None
 
             return existing_plan
+
+    async def getPlanByName(self, plan_name: str) -> ActionPlan | None:
+        async with get_session() as session:
+            statement = await session.execute(
+                select(ActionPlan)
+                .options(selectinload(ActionPlan.actividades))
+                .where(ActionPlan.nombre == plan_name)
+            )
+
+            existing_plan = statement.scalar_one_or_none()
+
+            if existing_plan is None:
+                return None
+
+            return existing_plan

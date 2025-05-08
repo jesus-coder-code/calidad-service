@@ -26,7 +26,9 @@ from Infrastructure.Repositories.SubcomponentsRepository import SubcomponentsRep
 router = APIRouter()
 
 
-@router.get("/subcomponents/GetSubcomponents", response_model=Dict[str, Any])
+@router.get(
+    "/subcomponents/GetSubcomponents",
+)
 async def get_subcomponents():
     subcomponentsRepository = SubcomponentsRepository()
     use_case = GetSubcomponentsUseCase(subcomponentsRepository)
@@ -79,7 +81,6 @@ async def delete_subcomponent(subcomponent_id: int):
 
 @router.get(
     "/subcomponents/GetSubcomponentById/{subcomponent_id}",
-    response_model=Dict[str, Any],
 )
 async def get_subcomponent_by_id(subcomponent_id: int):
     subcomponentsRepository = SubcomponentsRepository()

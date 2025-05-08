@@ -28,8 +28,8 @@ class ActivitySchemaResponse(BaseModel):
     responsable: str
     meta: str
     ciclo: CicloEnum
-    plan_id: int
-    subcomponent_id: int
+    plan_id: Optional[int]
+    subcomponent_id: Optional[int]
 
     class Config:
         from_attributes = True

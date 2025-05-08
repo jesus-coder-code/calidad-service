@@ -69,3 +69,15 @@ class ActivitiesRepository(IActivitiesRepository):
                 return None
 
             return existing_activity
+
+    async def getActivityByName(self, activity_name: str) -> Activities | None:
+        async with get_session() as session:
+            statement = await session.execute(
+                select(Activities).where(Activities.nombre == activity_name)
+            )
+            existing_activity = statement.scalar_one_or_none()
+
+            if existing_activity is None:
+                return None
+
+            return existing_activity

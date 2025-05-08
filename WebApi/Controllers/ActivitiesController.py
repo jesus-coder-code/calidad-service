@@ -12,6 +12,9 @@ from Application.UseCases.ActivitiesUseCases.CreateActivityUseCase import (
 from Application.UseCases.ActivitiesUseCases.GetActivityByIdUseCase import (
     GetActivityByIdUseCase,
 )
+from Application.UseCases.ActivitiesUseCases.GetActivityByNameUseCase import (
+    GetActivityByNameUseCase,
+)
 from Application.UseCases.ActivitiesUseCases.UpdateActivityUseCase import (
     UpdateActivityUseCase,
 )
@@ -26,7 +29,6 @@ router = APIRouter()
 
 @router.get(
     "/activities/GetActivities",
-    response_model=Dict[str, Any],
 )
 async def get_activities():
     activitiesRepository = ActivitiesRepository()
@@ -75,7 +77,6 @@ async def delete_activity(activity_id: int):
 
 @router.get(
     "/activities/GetActivityById/{activity_id}",
-    response_model=Dict[str, Any],
 )
 async def get_activity_by_id(activity_id: int):
     activitiesRepository = ActivitiesRepository()
@@ -87,4 +88,20 @@ async def get_activity_by_id(activity_id: int):
             status_code=status.HTTP_404_NOT_FOUND, detail="Esta actividad no existe"
         )
 
-    return {"message": "success", "data": activity, "status": 200}
+    data = ActivitySchemaResponse.model_validate(activity)
+    return {"message": "success", "data": data, "status": 200}
+
+
+@router.get("/activities/GetActivityByName/{activity_name}")
+async def get_activity_by_name(activity_name: str):
+    activitiesRepository = ActivitiesRepository()
+    use_case = GetActivityByNameUseCase(activitiesRepository)
+    activity = await use_case.execute(activity_name)
+
+    if activity is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="esta actividad no existe"
+        )
+
+    data = ActivitySchemaResponse.model_validate(activity)
+    return {"message": "success", "data": data, "status": 200}

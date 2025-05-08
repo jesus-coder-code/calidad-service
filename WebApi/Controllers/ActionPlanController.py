@@ -6,6 +6,9 @@ from Application.UseCases.ActionPlanUseCases.DeleteActionPlanUseCase import (
 from Application.UseCases.ActionPlanUseCases.GetActionPlanByIdUseCase import (
     GetActionPlanByIdUseCase,
 )
+from Application.UseCases.ActionPlanUseCases.GetActionPlanByNameUseCase import (
+    GetActionPlanByNameUseCase,
+)
 from Application.UseCases.ActionPlanUseCases.UpdateActionPlanUseCase import (
     UpdateActionPlanUseCase,
 )
@@ -29,7 +32,6 @@ router = APIRouter()
 
 @router.get(
     "/actionplan/GetActionPlan",
-    response_model=Dict[str, Any],
 )
 async def get_action_plan():
     actionPlanRepository = ActionPlanRepository()
@@ -80,7 +82,6 @@ async def delete_plan(plan_id: int):
 
 @router.get(
     "/actionplan/GetActionPlanById/{plan_id}",
-    response_model=Dict[str, Any],
 )
 async def get_action_plan_by_id(plan_id: int):
     actionPlanRepository = ActionPlanRepository()
@@ -92,5 +93,22 @@ async def get_action_plan_by_id(plan_id: int):
             status_code=status.HTTP_404_NOT_FOUND,
             detail="este plan de acción no existe",
         )
+
+    data = ActionPlanResponse.model_validate(plan)
+    return {"message": "success", "data": data, "status": 200}
+
+
+@router.get("/actionPlan/GetActionPlanByName/{plan_name}")
+async def get_plan_by_name(plan_name: str):
+    actionPlanRepository = ActionPlanRepository()
+    use_case = GetActionPlanByNameUseCase(actionPlanRepository)
+    plan = await use_case.execute(plan_name)
+
+    if plan is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="este plan de accion no existe",
+        )
+
     data = ActionPlanResponse.model_validate(plan)
     return {"message": "success", "data": data, "status": 200}

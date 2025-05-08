@@ -26,3 +26,7 @@ class IActivitiesRepository(ABC):
     @abstractmethod
     async def getActivityById(self, activity_id: int) -> Activities | None:
         pass
+
+    @abstractmethod
+    async def getActivityByName(self, activity_name: str) -> Activities | None:
+        pass

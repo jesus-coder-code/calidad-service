@@ -28,7 +28,9 @@ from Infrastructure.Repositories.ComponentsRepository import ComponentsRepositor
 router = APIRouter()
 
 
-@router.get("/components/GetComponents", response_model=Dict[str, Any])
+@router.get(
+    "/components/GetComponents",
+)
 async def get_component():
     componentsRepository = ComponentsRepository()
     use_case = GetComponentsUseCase(componentsRepository)
@@ -77,7 +79,7 @@ async def delete_component(component_id: int):
 
 
 @router.get(
-    "/components/GetComponentById/{component_id}", response_model=Dict[str, Any]
+    "/components/GetComponentById/{component_id}",
 )
 async def get_component_by_id(component_id: int):
     componentsRepository = ComponentsRepository()
