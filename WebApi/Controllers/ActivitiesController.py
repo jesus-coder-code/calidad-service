@@ -96,7 +96,7 @@ async def get_activity_by_id(activity_id: int):
 async def get_activity_by_name(activity_name: str):
     activitiesRepository = ActivitiesRepository()
     use_case = GetActivityByNameUseCase(activitiesRepository)
-    activity = await use_case.execute(activity_name)
+    activity = await use_case.execute(activity_name.lower())
 
     if activity is None:
         raise HTTPException(
