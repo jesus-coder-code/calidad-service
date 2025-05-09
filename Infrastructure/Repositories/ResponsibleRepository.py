@@ -71,7 +71,7 @@ class ResponsibleRepository(IResponsibleRepository):
     async def getResponsibleByName(self, responsible_name: str) -> Responsible | None:
         async with get_session() as session:
             statement = await session.execute(
-                select(Responsible).where(Responsible.id == responsible_name)
+                select(Responsible).where(Responsible.nombre == responsible_name)
             )
             existing_responsible = statement.scalar_one_or_none()
 

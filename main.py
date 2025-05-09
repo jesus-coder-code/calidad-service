@@ -10,6 +10,7 @@ from WebApi.Controllers import (
     ComponentsController,
     SubcomponentsController,
     PoliticsController,
+    ResponsibleController,
 )
 import uvicorn
 
@@ -43,6 +44,7 @@ app.include_router(
     SubcomponentsController.router, prefix="/api", tags=["Subcomponents"]
 )
 app.include_router(PoliticsController.router, prefix="/api", tags=["Politics"])
+app.include_router(ResponsibleController.router, prefix="/api", tags=["Responsible"])
 
 # Punto de entrada de la aplicación
 if __name__ == "__main__":

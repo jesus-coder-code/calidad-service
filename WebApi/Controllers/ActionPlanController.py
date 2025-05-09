@@ -102,7 +102,7 @@ async def get_action_plan_by_id(plan_id: int):
 async def get_plan_by_name(plan_name: str):
     actionPlanRepository = ActionPlanRepository()
     use_case = GetActionPlanByNameUseCase(actionPlanRepository)
-    plan = await use_case.execute(plan_name.lower())
+    plan = await use_case.execute(plan_name.lower().strip())
 
     if plan is None:
         raise HTTPException(

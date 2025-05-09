@@ -34,7 +34,8 @@ async def get_activities():
     activitiesRepository = ActivitiesRepository()
     use_case = GetActivitiesUseCase(activitiesRepository)
     activities = await use_case.execute()
-    return {"message": "success", "data": activities, "status": 200}
+    data = [ActivitySchemaResponse.model_validate(activity) for activity in activities]
+    return {"message": "success", "data": data, "status": 200}
 
 
 @router.post("/activities/CreateActivity", response_model=ActivitySchemaResponse)
@@ -96,7 +97,7 @@ async def get_activity_by_id(activity_id: int):
 async def get_activity_by_name(activity_name: str):
     activitiesRepository = ActivitiesRepository()
     use_case = GetActivityByNameUseCase(activitiesRepository)
-    activity = await use_case.execute(activity_name.lower())
+    activity = await use_case.execute(activity_name.lower().strip())
 
     if activity is None:
         raise HTTPException(
