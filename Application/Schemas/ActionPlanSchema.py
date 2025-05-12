@@ -7,7 +7,7 @@ from Application.Schemas.ActivitySchema import ActivitySchemaResponse
 class ActionPlanResponse(BaseModel):
     id: Optional[int]
     nombre: str
-    vigencia: int
+    vigencia_id: int
     politica_id: int
     actividades: List[ActivitySchemaResponse] = []
 
@@ -17,7 +17,7 @@ class ActionPlanResponse(BaseModel):
 
 class ActionPlanSchema(BaseModel):
     nombre: str
-    vigencia: int
+    vigencia_id: int
     politica_id: int
 
     class Config:
@@ -27,7 +27,7 @@ class ActionPlanSchema(BaseModel):
 class ActionPlanSchemaResponse(BaseModel):
     id: Optional[int]
     nombre: str
-    vigencia: int
+    vigencia_id: int
     politica_id: int
 
     class Config:

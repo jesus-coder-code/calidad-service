@@ -1,21 +1,21 @@
 from fastapi import APIRouter, HTTPException, status
 from Infrastructure.Repositories.ResponsibleRepository import ResponsibleRepository
-from Application.UseCases.ResponsibleUseCase.GetResponsibleUseCase import (
+from Application.UseCases.ResponsibleUseCases.GetResponsibleUseCase import (
     GetResponsibleUseCase,
 )
-from Application.UseCases.ResponsibleUseCase.GetResponsibleByIdUseCase import (
+from Application.UseCases.ResponsibleUseCases.GetResponsibleByIdUseCase import (
     GetResponsibleByIdUseCase,
 )
-from Application.UseCases.ResponsibleUseCase.GetResponsibleByNameUseCase import (
+from Application.UseCases.ResponsibleUseCases.GetResponsibleByNameUseCase import (
     GetResponsibleByNameUseCase,
 )
-from Application.UseCases.ResponsibleUseCase.CreateResponsibleUseCase import (
+from Application.UseCases.ResponsibleUseCases.CreateResponsibleUseCase import (
     CreateResponsibleUseCase,
 )
-from Application.UseCases.ResponsibleUseCase.UpdateResponsibleUseCase import (
+from Application.UseCases.ResponsibleUseCases.UpdateResponsibleUseCase import (
     UpdateResponsibleUseCase,
 )
-from Application.UseCases.ResponsibleUseCase.DeleteResponsibleUseCase import (
+from Application.UseCases.ResponsibleUseCases.DeleteResponsibleUseCase import (
     DeleteResponsibleUseCase,
 )
 from Application.Schemas.ResponsibleSchema import (

@@ -11,6 +11,7 @@ from WebApi.Controllers import (
     SubcomponentsController,
     PoliticsController,
     ResponsibleController,
+    TermController,
 )
 import uvicorn
 
@@ -36,7 +37,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(AuthController.router, prefix="/api", tags=["Login"])
+app.include_router(AuthController.router, prefix="/api", tags=["Auth"])
 app.include_router(ActivitiesController.router, prefix="/api", tags=["Activities"])
 app.include_router(ActionPlanController.router, prefix="/api", tags=["Action Plans"])
 app.include_router(ComponentsController.router, prefix="/api", tags=["Components"])
@@ -45,6 +46,7 @@ app.include_router(
 )
 app.include_router(PoliticsController.router, prefix="/api", tags=["Politics"])
 app.include_router(ResponsibleController.router, prefix="/api", tags=["Responsible"])
+app.include_router(TermController.router, prefix="/api", tags=["Term"])
 
 # Punto de entrada de la aplicación
 if __name__ == "__main__":

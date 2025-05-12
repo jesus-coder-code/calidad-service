@@ -11,6 +11,7 @@ from Domain.Entities import (
     Subcomponents,
     Politics,
     Responsible,
+    Term,
 )
 
 load_dotenv()

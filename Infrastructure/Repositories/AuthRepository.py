@@ -1,58 +1,33 @@
 import httpx
-from typing import Optional
-from Domain.Entities.AuthEntity import AuthRequest, TokenResponse
-from Domain.Interfaces.IAuthRepository import IAuthRepository
 from Infrastructure.utils.configuration import settings
-from fastapi import HTTPException, status
+from Domain.Interfaces.IAuthRepository import IAuthRepository
 
 
 class AuthRepository(IAuthRepository):
     def __init__(self):
-        self.token_endpoint = settings.COGNITO_ENDPOINT
+        self.token_url = settings.COGNITO_TOKEN_URL
         self.client_id = settings.COGNITO_CLIENT_ID
         self.client_secret = settings.COGNITO_CLIENT_SECRET
 
-    async def authenticate(self, auth_request: AuthRequest) -> TokenResponse:
-        auth_data = {
-            "grant_type": "client_credentials",
+    async def authenticate(self, email: str, password: str) -> dict | None:
+        data = {
+            "grant-type": "password",
             "client_id": self.client_id,
-            "client_secret": self.client_secret,
-            "username": auth_request.username,
-            "password": auth_request.password,
-            "scope": auth_request.scope,
+            "email": email,
+            "password": password,
         }
 
-        headers = {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Accept": "application/json",
-        }
+        auth = (self.client_id, self.client_secret)
 
-        try:
-            async with httpx.AsyncClient(timeout=30.0) as client:
-                response = await client.post(
-                    self.token_endpoint, data=auth_data, headers=headers
-                )
-                response.raise_for_status()
-                return TokenResponse(data=response.json())
+        headers = {"Content-Type": "application/x-www-form-urlencoded"}
 
-        except httpx.HTTPStatusError as e:
-            error_detail = (
-                "Invalid credentials"
-                if e.response.status_code == 401
-                else "Authentication failed"
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                self.token_url, data=data, auth=auth, headers=headers
             )
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, detail=error_detail
-            ) from e
 
-        except httpx.RequestError as e:
-            raise HTTPException(
-                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="Authentication service unavailable",
-            ) from e
+            print(response)
+            if response.status_code != 200:
+                raise Exception(f"Authentication failed: {response.text}")
 
-        except httpx.RequestError as e:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Internal error",
-            ) from e
+            return response.json()
