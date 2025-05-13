@@ -1,20 +1,12 @@
-from pydantic_settings import BaseSettings
 import os
 from dotenv import load_dotenv
 
+# Cargar las variables desde el archivo .env
 load_dotenv()
 
-
-# definir las variables de entorno
-class Settings(BaseSettings):
-    COGNITO_TOKEN_URL: str
-    COGNITO_CLIENT_SECRET: str
-    COGNITO_CLIENT_ID: str
-    API_KEY: str
-    DATABASE_URL: str
-
-    class Config:
-        env_file = ".env"
-
-
-settings = Settings()
+# Acceder a las variables de entorno
+COGNITO_TOKEN_URL = os.environ["COGNITO_TOKEN_URL"]
+COGNITO_CLIENT_SECRET = os.environ["COGNITO_CLIENT_SECRET"]
+COGNITO_CLIENT_ID = os.environ["COGNITO_CLIENT_ID"]
+API_KEY = os.environ["API_KEY"]
+DATABASE_URL = os.environ["DATABASE_URL"]

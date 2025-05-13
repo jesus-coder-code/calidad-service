@@ -21,14 +21,14 @@ from Domain.Entities import (
 )
 
 # Importa settings desde tu módulo de configuración
-from Infrastructure.utils.configuration import Settings
+from Infrastructure.utils.configuration import *
 
-settings = Settings()
+# settings = Settings()
 # Carga el archivo alembic.ini
 config = context.config
 
 # Establece la URL de la base de datos desde settings
-config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
+config.set_main_option("sqlalchemy.url", DATABASE_URL)
 
 # Configuración del logging
 fileConfig(config.config_file_name)
@@ -40,7 +40,7 @@ target_metadata = SQLModel.metadata
 def run_migrations_offline():
     """Ejecuta las migraciones en modo offline (sin conexión a la base de datos)"""
     context.configure(
-        url=Settings.DATABASE_URL,
+        url=DATABASE_URL,
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},

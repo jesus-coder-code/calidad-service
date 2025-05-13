@@ -1,13 +1,13 @@
 import httpx
-from Infrastructure.utils.configuration import settings
 from Domain.Interfaces.IAuthRepository import IAuthRepository
+from Infrastructure.utils.configuration import *
 
 
 class AuthRepository(IAuthRepository):
     def __init__(self):
-        self.token_url = settings.COGNITO_TOKEN_URL
-        self.client_id = settings.COGNITO_CLIENT_ID
-        self.client_secret = settings.COGNITO_CLIENT_SECRET
+        self.token_url = COGNITO_TOKEN_URL
+        self.client_id = COGNITO_CLIENT_ID
+        self.client_secret = COGNITO_CLIENT_SECRET
 
     async def authenticate(self, email: str, password: str) -> dict | None:
         data = {
