@@ -7,6 +7,7 @@ from Application.Schemas.ComponentSchema import ComponentResponse
 
 class PoliticSchemaRequest(BaseModel):
     nombre: str
+    dependencia_id: int
 
     class Config:
         from_attributes = True
@@ -15,6 +16,7 @@ class PoliticSchemaRequest(BaseModel):
 class PoliticSchemaBaseResponse(BaseModel):
     id: Optional[int]
     nombre: str
+    dependencia_id: Optional[int]
 
     class Config:
         from_attributes = True
@@ -23,6 +25,7 @@ class PoliticSchemaBaseResponse(BaseModel):
 class PoliticSchemaResponse(BaseModel):
     id: Optional[int]
     nombre: str
+    dependencia_id: Optional[int]
     planes: List[ActionPlanSchemaResponse] = []
     componentes: List[ComponentResponse] = []
 

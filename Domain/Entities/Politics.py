@@ -1,3 +1,4 @@
+from sqlalchemy import Column, ForeignKey, Integer
 from sqlmodel import Relationship, SQLModel, Field
 from typing import Optional
 from typing import List
@@ -10,6 +11,11 @@ class Politics(SQLModel, table=True):
 
     id: Optional[int] = Field(default=None, primary_key=True)
     nombre: str
+    dependencia_id: Optional[int] = Field(
+        default=None,
+        sa_column=Column(Integer, ForeignKey("dependencias.id", ondelete="SET NULL")),
+    )
 
     componentes: List["Components"] = Relationship(back_populates="politica")
     planes: List["ActionPlan"] = Relationship(back_populates="politica")
+    dependencia: Optional["Dependencies"] = Relationship(back_populates="politicas")  # type: ignore

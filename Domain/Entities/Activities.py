@@ -16,6 +16,8 @@ class Activities(SQLModel, table=True):
     fecha_inicio: date
     fecha_final: date
     responsable: str
+    producto: str = Field(default=None)
+    indicador_producto: str = Field(default=None)
     meta: str
     ciclo: CicloEnum = Field(default=CicloEnum.PLANEAR)
     plan_id: Optional[int] = Field(

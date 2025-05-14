@@ -24,4 +24,9 @@ async def create_term(term: TermRequest):
     term_model = Term(**term.model_dump())
     use_case = CreateTermUseCase(TermRepository())
     created_term = await use_case.execute(term_model)
+
+    if created_term is False:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="esta vigencia ya existe"
+        )
     return created_term

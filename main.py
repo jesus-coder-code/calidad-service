@@ -12,6 +12,8 @@ from WebApi.Controllers import (
     PoliticsController,
     ResponsibleController,
     TermController,
+    EvidenceController,
+    DependencyController,
 )
 import uvicorn
 
@@ -47,6 +49,8 @@ app.include_router(
 app.include_router(PoliticsController.router, prefix="/api", tags=["Politics"])
 app.include_router(ResponsibleController.router, prefix="/api", tags=["Responsible"])
 app.include_router(TermController.router, prefix="/api", tags=["Term"])
+app.include_router(EvidenceController.router, prefix="/api", tags=["Evidence"])
+app.include_router(DependencyController.router, prefix="/api", tags=["Dependency"])
 
 # Punto de entrada de la aplicación
 if __name__ == "__main__":

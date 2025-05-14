@@ -51,8 +51,8 @@ async def create_plan(plan: ActionPlanSchema):
 
 
 @router.put("/actionplan/UpdateActionPlan/{plan_id}")
-async def update_plan(plan_id: int, activity: ActionPlanSchema):
-    plan_model = ActionPlan(**activity.model_dump())
+async def update_plan(plan_id: int, plan: ActionPlanSchema):
+    plan_model = ActionPlan(**plan.model_dump())
     actionPlanRepository = ActionPlanRepository()
     use_case = UpdateActionPlanUseCase(actionPlanRepository)
     update_plan = await use_case.execute(plan_id, plan_model)

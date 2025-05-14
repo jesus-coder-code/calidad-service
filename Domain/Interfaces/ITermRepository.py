@@ -9,7 +9,7 @@ class ITermRepository(ABC):
         pass
 
     @abstractmethod
-    async def createTerm(self, term: Term) -> Term:
+    async def createTerm(self, term: Term) -> Term | bool:
         pass
 
     @abstractmethod

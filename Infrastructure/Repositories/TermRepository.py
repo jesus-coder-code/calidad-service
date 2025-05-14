@@ -13,12 +13,20 @@ class TermRepository(ITermRepository):
             result = await session.execute(statement)
             return result.scalars().all()
 
-    async def createTerm(self, term: Term) -> Term:
+    async def createTerm(self, term: Term) -> Term | bool:
         async with get_session() as session:
-            session.add(term)
-            await session.commit()
-            await session.refresh(term)
-            return term
+            statement = await session.execute(
+                select(Term).where(Term.vigencia == term.vigencia)
+            )
+            result = statement.scalar_one_or_none()
+            print(statement)
+            if result is None:
+                session.add(term)
+                await session.commit()
+                await session.refresh(term)
+                return term
+            else:
+                return False
 
     async def updateTerm(self, term_id: int, term: Term) -> Term | None:
         raise NotImplementedError

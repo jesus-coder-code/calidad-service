@@ -12,6 +12,8 @@ class ActivitySchema(BaseModel):
     responsable: str
     meta: str
     ciclo: CicloEnum
+    producto: str
+    indicador_producto: str
     plan_id: int
     subcomponent_id: int
 
@@ -28,6 +30,8 @@ class ActivitySchemaResponse(BaseModel):
     responsable: str
     meta: str
     ciclo: CicloEnum
+    producto: str
+    indicador_producto: str
     plan_id: Optional[int]
     subcomponent_id: Optional[int]
 

@@ -27,8 +27,9 @@ from Infrastructure.utils.configuration import *
 # Carga el archivo alembic.ini
 config = context.config
 
-# Establece la URL de la base de datos desde settings
-config.set_main_option("sqlalchemy.url", DATABASE_URL)
+# Establece la URL de la base de datos desde
+SYNC_DATABASE_URL = DATABASE_URL.replace("postgresql+asyncpg", "postgresql")
+config.set_main_option("sqlalchemy.url", SYNC_DATABASE_URL)
 
 # Configuración del logging
 fileConfig(config.config_file_name)
