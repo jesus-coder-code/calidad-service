@@ -9,11 +9,11 @@ class AuthRepository(IAuthRepository):
         self.client_id = COGNITO_CLIENT_ID
         self.client_secret = COGNITO_CLIENT_SECRET
 
-    async def authenticate(self, email: str, password: str) -> dict | None:
+    async def authenticate(self, username: str, password: str) -> dict | None:
         data = {
             "grant-type": "password",
             "client_id": self.client_id,
-            "email": email,
+            "username": username,
             "password": password,
         }
 
