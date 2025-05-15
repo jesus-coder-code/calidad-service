@@ -64,7 +64,10 @@ class DependencyRepository(IDependencyRepository):
         async with get_session() as session:
             statement = await session.execute(
                 select(Dependencies)
-                .options(selectinload(Dependencies.politicas))
+                .options(
+                    selectinload(Dependencies.politicas),
+                    selectinload(Dependencies.responsable),
+                )
                 .where(Dependencies.id == dependency_id)
             )
 

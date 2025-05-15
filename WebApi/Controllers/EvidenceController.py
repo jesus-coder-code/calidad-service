@@ -9,8 +9,12 @@ router = APIRouter()
 @router.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
     try:
-        url = upload_file_to_s3(file)
-        return {"message": "Archivo subido exitosamente", "url": url}
+        url, filename = upload_file_to_s3(file)
+        return {
+            "message": "Archivo subido exitosamente",
+            "url": url,
+            "filename": filename,
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

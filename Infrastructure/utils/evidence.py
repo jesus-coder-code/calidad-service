@@ -38,13 +38,14 @@ def upload_file_to_s3(file: UploadFile, folder: str = BASE_FOLDER) -> str:
     try:
         s3_client.upload_fileobj(file.file, S3_BUCKET_NAME, key)
         url = f"https://{S3_BUCKET_NAME}.s3.{S3_REGION}.amazonaws.com/{key}"
-        return url
+        return url, new_filename
     except (BotoCoreError, ClientError) as e:
         raise Exception(f"Error al subir archivo: {str(e)}")
 
 
 def download_file_from_s3(filename: str, folder: str = BASE_FOLDER) -> bytes:
-    key = os.path.join(folder, filename)
+    # key = os.path.join(folder, filename)
+    key = f"{folder.rstrip('/')}/{filename}"
     try:
         response = s3_client.get_object(Bucket=S3_BUCKET_NAME, Key=key)
         return response["Body"].read()

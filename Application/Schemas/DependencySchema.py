@@ -23,7 +23,7 @@ class DependencyResponse(BaseModel):
     id: Optional[int]
     nombre: str
     politicas: List[PoliticSchemaBaseResponse] = []
-    responsable: Optional[ResponsibleSchemaResponse] = None
+    responsable: Optional[ResponsibleSchemaResponse]
 
     class Config:
         from_attributes = True
