@@ -4,6 +4,7 @@ from sqlalchemy.orm import selectinload
 from Domain.Entities.ActionPlan import ActionPlan
 from Infrastructure.DB.Database import get_session
 from Domain.Interfaces.IActionPlanRepository import IActionPlanRepository
+from Domain.Entities.Term import Term
 
 
 class ActionPlanRepository(IActionPlanRepository):
@@ -20,7 +21,9 @@ class ActionPlanRepository(IActionPlanRepository):
             await session.refresh(plans)
             return plans
 
-    async def updatePlan(self, plan_id: int, plans: ActionPlan) -> ActionPlan:
+    async def updatePlan(
+        self, plan_id: int, plans: ActionPlan
+    ) -> ActionPlan | None | bool:
         async with get_session() as session:
             plan_exists = await session.execute(
                 select(ActionPlan).where(ActionPlan.id == plan_id)
@@ -29,6 +32,10 @@ class ActionPlanRepository(IActionPlanRepository):
 
             if existing_plan is None:
                 return None
+
+            vigencia = await session.get(Term, existing_plan.vigencia_id)
+            if vigencia.estado != "abierto":
+                return False
 
             for key, value in plans.__dict__.items():
                 if (

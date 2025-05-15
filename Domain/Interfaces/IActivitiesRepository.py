@@ -16,7 +16,7 @@ class IActivitiesRepository(ABC):
     @abstractmethod
     async def updateActivity(
         self, activity_id: int, activities: Activities
-    ) -> Activities | None:
+    ) -> Activities | None | bool:
         pass
 
     @abstractmethod

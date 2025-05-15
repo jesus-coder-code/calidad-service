@@ -9,5 +9,5 @@ class UpdateActionPlanUseCase:
 
     async def execute(
         self, plan_id: int, updated_plan: ActionPlan
-    ) -> ActionPlan | None:
+    ) -> ActionPlan | None | bool:
         return await self.repository.updatePlan(plan_id, updated_plan)

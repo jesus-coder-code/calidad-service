@@ -10,5 +10,5 @@ class UpdateActivityUseCase:
 
     async def execute(
         self, activity_id: int, updated_activity: Activities
-    ) -> Activities | None:
+    ) -> Activities | None | bool:
         return await self.repository.updateActivity(activity_id, updated_activity)

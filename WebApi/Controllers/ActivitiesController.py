@@ -59,6 +59,13 @@ async def update_activity(activity_id: int, activity: ActivitySchema):
             status_code=status.HTTP_404_NOT_FOUND,
             detail="actividad para actualizar no existe",
         )
+
+    elif update is False:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="esta actividad no se puede actualizar debido a que su vigencia está cerrada",
+        )
+
     return {"message": "actividad actualizada correctamente"}
 
 

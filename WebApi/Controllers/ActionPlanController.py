@@ -62,6 +62,11 @@ async def update_plan(plan_id: int, plan: ActionPlanSchema):
             status_code=status.HTTP_404_NOT_FOUND,
             detail="este plan para actualizar no existe",
         )
+    elif update_plan is False:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="este plan no se puede actualizar debido a que su vigencia está cerrada",
+        )
 
     return {"message": "plan de acción actualizado correctamente"}
 

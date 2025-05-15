@@ -4,6 +4,8 @@ from Domain.Entities.Activities import Activities
 from typing import List, Optional
 from Infrastructure.DB.Database import get_session
 from Domain.Interfaces.IActivitiesRepository import IActivitiesRepository
+from Domain.Entities.Term import Term
+from Domain.Entities.ActionPlan import ActionPlan
 
 
 class ActivitiesRepository(IActivitiesRepository):
@@ -22,7 +24,7 @@ class ActivitiesRepository(IActivitiesRepository):
 
     async def updateActivity(
         self, activity_id: int, activities: Activities
-    ) -> Activities | None:
+    ) -> Activities | None | bool:
         async with get_session() as session:
             activity_found = await session.execute(
                 select(Activities).where(Activities.id == activity_id)
@@ -32,6 +34,14 @@ class ActivitiesRepository(IActivitiesRepository):
             if exists_activity is None:
                 # raise ValueError("esta actividad no existe")
                 return None
+
+            plan = await session.get(ActionPlan, exists_activity.plan_id)
+            if plan is None:
+                return True
+
+            vigencia = await session.get(Term, plan.vigencia_id)
+            if vigencia is None or vigencia.estado != "abierto":
+                return False
 
             for key, value in activities.__dict__.items():
                 if (
