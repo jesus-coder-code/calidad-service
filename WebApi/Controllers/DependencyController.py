@@ -75,16 +75,16 @@ async def delete_dependency(dependency_id: int):
 
 
 @router.get("/dependency/GetDependencyById/{dependency_id}")
-async def get_plan_by_id(dependency_id: int):
+async def get_dependendcy_by_id(dependency_id: int):
     dependencyRepository = DependencyRepository()
     use_case = GetDependencyByIdUseCase(dependencyRepository)
-    plan = await use_case.execute(dependency_id)
+    dependency = await use_case.execute(dependency_id)
 
-    if plan is None:
+    if dependency is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="esta dependencia no existe no existe",
         )
 
-    data = DependencyResponse.model_validate(plan)
+    data = DependencyResponse.model_validate(dependency)
     return {"message": "success", "data": data, "status": 200}

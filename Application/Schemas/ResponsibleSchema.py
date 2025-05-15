@@ -8,6 +8,7 @@ class ResponsibleSchemaRequest(BaseModel):
     correo: EmailStr
     telefono: int
     rol: RolEnum
+    dependencia_id: Optional[int]
 
     class Config:
         from_attributes = True
@@ -20,6 +21,7 @@ class ResponsibleSchemaResponse(BaseModel):
     correo: EmailStr
     telefono: int
     rol: RolEnum
+    dependencia_id: Optional[int]
 
     class Config:
         from_attributes = True

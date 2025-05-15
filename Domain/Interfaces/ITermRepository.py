@@ -21,5 +21,5 @@ class ITermRepository(ABC):
         pass
 
     @abstractmethod
-    async def getTermById(self, term_id: int) -> Term | None:
+    async def getTermByYear(self, term_year: int) -> Term | None:
         pass

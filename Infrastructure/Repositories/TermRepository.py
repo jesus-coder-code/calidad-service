@@ -29,7 +29,23 @@ class TermRepository(ITermRepository):
                 return False
 
     async def updateTerm(self, term_id: int, term: Term) -> Term | None:
-        raise NotImplementedError
+        async with get_session() as session:
+            statement = await session.execute(select(Term).where(Term.id == term_id))
+            existing_term = statement.scalars().first()
+
+            if existing_term is None:
+                return None
+
+            for key, value in term.__dict__.items():
+                if (
+                    key != "id"
+                    and key != "_sa_instance_state"
+                    and hasattr(existing_term, key)
+                ):
+                    setattr(existing_term, key, value)
+
+            await session.commit()
+            return existing_term
 
     async def deleteTerm(self, term_id: int) -> bool:
         async with get_session() as session:
@@ -43,12 +59,12 @@ class TermRepository(ITermRepository):
             await session.commit()
             return True
 
-    async def getTermById(self, term_id: int) -> Term | None:
+    async def getTermByYear(self, term_year: int) -> Term | None:
         async with get_session() as session:
             statement = await session.execute(
                 select(Term)
                 .options(selectinload(Term.planes))
-                .where(Term.id == term_id)
+                .where(Term.vigencia == term_year)
             )
 
             term = statement.scalar_one_or_none()

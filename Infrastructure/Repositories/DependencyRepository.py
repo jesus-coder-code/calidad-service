@@ -10,7 +10,8 @@ class DependencyRepository(IDependencyRepository):
     async def getDependencies(self) -> List[Dependencies]:
         async with get_session() as session:
             statement = select(Dependencies).options(
-                selectinload(Dependencies.politicas)
+                selectinload(Dependencies.responsable),
+                selectinload(Dependencies.politicas),
             )
             result = await session.execute(statement)
             return result.scalars().all()

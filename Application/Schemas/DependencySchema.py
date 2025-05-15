@@ -1,6 +1,7 @@
 from typing import List, Optional
 from pydantic import BaseModel
 from Application.Schemas.PoliticSchema import PoliticSchemaBaseResponse
+from Application.Schemas.ResponsibleSchema import ResponsibleSchemaResponse
 
 
 class DependencyRequest(BaseModel):
@@ -22,6 +23,8 @@ class DependencyResponse(BaseModel):
     id: Optional[int]
     nombre: str
     politicas: List[PoliticSchemaBaseResponse] = []
+    responsable: Optional[ResponsibleSchemaResponse] = None
 
     class Config:
         from_attributes = True
+        use_enum_values = True

@@ -3,6 +3,7 @@ from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import UploadFile
 import os
 from dotenv import load_dotenv
+from datetime import datetime
 
 load_dotenv()
 
@@ -22,8 +23,17 @@ s3_client = boto3.client(
 
 
 def upload_file_to_s3(file: UploadFile, folder: str = BASE_FOLDER) -> str:
-    # key = os.path.join(folder, file.filename)
-    key = f"{folder}/{file.filename}"
+    # Extraer la extensión original
+    _, extension = os.path.splitext(file.filename)
+
+    # Formatear fecha y hora actual
+    timestamp = datetime.now().strftime("%d_%m_%Y_%H:%M:%S")
+
+    # Construir nuevo nombre de archivo
+    new_filename = f"SEGUIMIENTO_{timestamp}{extension}"
+
+    # Construir la key en S3
+    key = f"{folder}/{new_filename}"
 
     try:
         s3_client.upload_fileobj(file.file, S3_BUCKET_NAME, key)
