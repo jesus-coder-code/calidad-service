@@ -22,7 +22,9 @@ s3_client = boto3.client(
 
 
 def upload_file_to_s3(file: UploadFile, folder: str = BASE_FOLDER) -> str:
-    key = os.path.join(folder, file.filename)
+    # key = os.path.join(folder, file.filename)
+    key = f"{folder}/{file.filename}"
+
     try:
         s3_client.upload_fileobj(file.file, S3_BUCKET_NAME, key)
         url = f"https://{S3_BUCKET_NAME}.s3.{S3_REGION}.amazonaws.com/{key}"
