@@ -1,7 +1,10 @@
 from datetime import date
 from typing import List, Optional, Dict, Any
 from pydantic import BaseModel
-from Application.Schemas.ActivitySchema import ActivityResponse
+from Application.Schemas.ActivitySchema import (
+    ActivityBaseResponse,
+    ActivitySummaryResponse,
+)
 
 
 class ActionPlanResponse(BaseModel):
@@ -9,7 +12,7 @@ class ActionPlanResponse(BaseModel):
     nombre: str
     vigencia_id: int
     politica_id: int
-    actividades: List[ActivityResponse] = []
+    actividades: List[ActivitySummaryResponse] = []
 
     class Config:
         from_attributes = True

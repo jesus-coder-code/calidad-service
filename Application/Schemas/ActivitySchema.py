@@ -1,5 +1,5 @@
 from typing import List, Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, computed_field, Field
 from datetime import date
 
 from Application.Schemas.EvidenceSchema import EvidenceSchemaResponse
@@ -10,6 +10,7 @@ class ActivityRequest(BaseModel):
     nombre: str
     fecha_inicio: date
     fecha_final: date
+    created_at: date
     responsable: str
     meta: str
     ciclo: CicloEnum
@@ -28,6 +29,7 @@ class ActivityResponse(BaseModel):
     nombre: str
     fecha_inicio: date
     fecha_final: date
+    created_at: date
     responsable: str
     meta: str
     ciclo: CicloEnum
@@ -36,6 +38,11 @@ class ActivityResponse(BaseModel):
     plan_id: Optional[int]
     subcomponent_id: Optional[int]
     evidencias: List[EvidenceSchemaResponse] = []
+
+    @computed_field
+    @property
+    def progreso_total(self) -> int:
+        return sum(e.avances for e in self.evidencias)
 
     class Config:
         from_attributes = True
@@ -47,6 +54,7 @@ class ActivityBaseResponse(BaseModel):
     nombre: str
     fecha_inicio: date
     fecha_final: date
+    created_at: date
     responsable: str
     meta: str
     ciclo: CicloEnum
@@ -58,3 +66,12 @@ class ActivityBaseResponse(BaseModel):
     class Config:
         from_attributes = True
         use_enum_values = True
+
+
+class ActivitySummaryResponse(ActivityResponse):
+    evidencias: list = Field(exclude=True)
+
+    @computed_field(return_type=int)
+    @property
+    def progreso_total(self) -> int:
+        return sum(e.avances for e in self.evidencias)

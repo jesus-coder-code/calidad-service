@@ -16,6 +16,7 @@ class Activities(SQLModel, table=True):
     nombre: str
     fecha_inicio: date
     fecha_final: date
+    created_at: date
     responsable: str
     producto: str = Field(default=None)
     indicador_producto: str = Field(default=None)

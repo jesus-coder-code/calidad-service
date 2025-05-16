@@ -59,7 +59,7 @@ async def delete_term(term_id: int):
     return {"message": "vigencia eliminada correctamente"}
 
 
-@router.get("/term/DeleteTerm/{term_year}")
+@router.get("/term/GetTermByYear/{term_year}")
 async def get_term_by_year(term_year: int):
     use_case = GetTermByYearUseCase(TermRepository())
     term = await use_case.execute(term_year)

@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, UploadFile, File, HTTPException
+from fastapi import APIRouter, UploadFile, File, HTTPException, Form
 from fastapi.responses import StreamingResponse
 from Application.Schemas.EvidenceSchema import EvidenceSchemaResponse
 from Application.UseCases.EvidencesUseCases.CreateEvidenceUseCase import (
@@ -25,13 +25,11 @@ async def upload_file(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))"""
 
-repository = EvidencesRepository()
-use_case = CreateEvidenceUseCase(repository)
-
 
 @router.post("/upload/{actividad_id}", response_model=List[EvidenceSchemaResponse])
 async def upload_files(
     actividad_id: int,
+    avances: int = Form(...),
     files: List[UploadFile] = File(...),
 ):
     repository = EvidencesRepository()
@@ -41,11 +39,14 @@ async def upload_files(
     for file in files:
         try:
             # Subir archivo a S3
-            url, filename = upload_file_to_s3(file)
+            url, filename = upload_file_to_s3(file, actividad_id)
 
             # Crear y guardar evidencia
             evidence = Evidences(
-                nombre_archivo=filename, url_archivo=url, actividad_id=actividad_id
+                nombre_archivo=filename,
+                url_archivo=url,
+                actividad_id=actividad_id,
+                avances=avances,
             )
             created = await use_case.execute(evidence)
             evidences_created.append(created)

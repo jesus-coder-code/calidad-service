@@ -60,7 +60,7 @@ async def update_dependency(dependency_id: int, dependency: DependencyRequest):
     return {"message": "dependencia actualizada correctamente"}
 
 
-@router.delete("/dependency/DelecteDependency/{dependency_id}")
+@router.delete("/dependency/DeleteDependency/{dependency_id}")
 async def delete_dependency(dependency_id: int):
     dependencyRepository = DependencyRepository()
     use_case = DeleteDependencyUseCase(dependencyRepository)

@@ -5,12 +5,15 @@ from Domain.Entities.ActionPlan import ActionPlan
 from Infrastructure.DB.Database import get_session
 from Domain.Interfaces.IActionPlanRepository import IActionPlanRepository
 from Domain.Entities.Term import Term
+from Domain.Entities.Activities import Activities
 
 
 class ActionPlanRepository(IActionPlanRepository):
     async def getAllPlans(self) -> List[ActionPlan]:
         async with get_session() as session:
-            statement = select(ActionPlan).options(selectinload(ActionPlan.actividades))
+            statement = select(ActionPlan).options(
+                selectinload(ActionPlan.actividades).selectinload(Activities.evidencias)
+            )
             result = await session.execute(statement)
             return result.scalars().all()
 
@@ -66,7 +69,11 @@ class ActionPlanRepository(IActionPlanRepository):
         async with get_session() as session:
             statement = await session.execute(
                 select(ActionPlan)
-                .options(selectinload(ActionPlan.actividades))
+                .options(
+                    selectinload(ActionPlan.actividades).selectinload(
+                        Activities.evidencias
+                    )
+                )
                 .where(ActionPlan.id == plan_id)
             )
 
@@ -81,7 +88,11 @@ class ActionPlanRepository(IActionPlanRepository):
         async with get_session() as session:
             statement = await session.execute(
                 select(ActionPlan)
-                .options(selectinload(ActionPlan.actividades))
+                .options(
+                    selectinload(ActionPlan.actividades).selectinload(
+                        Activities.evidencias
+                    )
+                )
                 .where(ActionPlan.nombre == plan_name)
             )
 

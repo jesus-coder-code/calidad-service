@@ -10,6 +10,7 @@ class Evidences(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     nombre_archivo: str
     url_archivo: str
+    avances: int
     actividad_id: int = Field(
         sa_column=Column(Integer, ForeignKey("actividades.id", ondelete="CASCADE"))
     )
