@@ -1,6 +1,7 @@
 from typing import Optional
 from sqlmodel import SQLModel, Field, Relationship
 from datetime import date
+from Domain.Entities.Evidences import Evidences
 from Domain.Enums.CicloEnum import CicloEnum
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy.sql.sqltypes import Integer
@@ -29,5 +30,6 @@ class Activities(SQLModel, table=True):
         sa_column=Column(Integer, ForeignKey("subcomponentes.id", ondelete="SET NULL")),
     )
 
+    evidencias: list["Evidences"] = Relationship(back_populates="actividad")
     plan: Optional["ActionPlan"] = Relationship(back_populates="actividades")  # type: ignore
     subcomponente: Optional["Subcomponents"] = Relationship(back_populates="actividades")  # type: ignore

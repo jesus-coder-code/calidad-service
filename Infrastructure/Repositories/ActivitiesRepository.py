@@ -6,12 +6,13 @@ from Infrastructure.DB.Database import get_session
 from Domain.Interfaces.IActivitiesRepository import IActivitiesRepository
 from Domain.Entities.Term import Term
 from Domain.Entities.ActionPlan import ActionPlan
+from sqlalchemy.orm import selectinload
 
 
 class ActivitiesRepository(IActivitiesRepository):
     async def getAllActivities(self) -> List[Activities]:
         async with get_session() as session:
-            statement = select(Activities)
+            statement = select(Activities).options(selectinload(Activities.evidencias))
             result = await session.execute(statement)
             return result.scalars().all()
 
@@ -71,7 +72,9 @@ class ActivitiesRepository(IActivitiesRepository):
     async def getActivityById(self, activity_id: int) -> Activities | None:
         async with get_session() as session:
             statement = await session.execute(
-                select(Activities).where(Activities.id == activity_id)
+                select(Activities)
+                .options(selectinload(Activities.evidencias))
+                .where(Activities.id == activity_id)
             )
             existing_activity = statement.scalar_one_or_none()
 

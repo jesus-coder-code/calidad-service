@@ -1,7 +1,6 @@
 from typing import List, Optional
 from pydantic import BaseModel
 
-from Application.Schemas.ActivitySchema import ActivitySchemaResponse
 from Application.Schemas.SubcomponentSchema import SubcomponentSchemaResponse
 
 

@@ -13,6 +13,7 @@ from Domain.Entities import (
     Responsible,
     Term,
     Dependencies,
+    Evidences,
 )
 
 load_dotenv()

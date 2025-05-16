@@ -1,5 +1,4 @@
-from typing import Any, Dict
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, HTTPException, status
 from Application.UseCases.ActivitiesUseCases.DeleteActivityUseCase import (
     DeleteActivityUseCase,
 )
@@ -19,8 +18,11 @@ from Application.UseCases.ActivitiesUseCases.UpdateActivityUseCase import (
     UpdateActivityUseCase,
 )
 from Domain.Entities.Activities import Activities
-from Infrastructure.utils.dependencies import verify_api_key
-from Application.Schemas.ActivitySchema import ActivitySchema, ActivitySchemaResponse
+from Application.Schemas.ActivitySchema import (
+    ActivityRequest,
+    ActivityResponse,
+    ActivityBaseResponse,
+)
 from Infrastructure.Repositories.ActivitiesRepository import ActivitiesRepository
 
 
@@ -34,21 +36,21 @@ async def get_activities():
     activitiesRepository = ActivitiesRepository()
     use_case = GetActivitiesUseCase(activitiesRepository)
     activities = await use_case.execute()
-    data = [ActivitySchemaResponse.model_validate(activity) for activity in activities]
+    data = [ActivityResponse.model_validate(activity) for activity in activities]
     return {"message": "success", "data": data, "status": 200}
 
 
-@router.post("/activities/CreateActivity", response_model=ActivitySchemaResponse)
-async def create_activity(activity: ActivitySchema):
-    activitiesRepository = ActivitiesRepository()
+@router.post("/activities/CreateActivity", response_model=ActivityBaseResponse)
+async def create_activity(activity: ActivityRequest):
     activity_model = Activities(**activity.model_dump())
-    use_case = CreateActivityUseCase(activitiesRepository)
+    activityRepository = ActivitiesRepository()
+    use_case = CreateActivityUseCase(activityRepository)
     created_activity = await use_case.execute(activity_model)
     return created_activity
 
 
 @router.put("/activities/UpdateActivity/{activity_id}")
-async def update_activity(activity_id: int, activity: ActivitySchema):
+async def update_activity(activity_id: int, activity: ActivityRequest):
     activitiesRepository = ActivitiesRepository()
     activity_model = Activities(**activity.model_dump())
     use_case = UpdateActivityUseCase(activitiesRepository)
@@ -96,7 +98,7 @@ async def get_activity_by_id(activity_id: int):
             status_code=status.HTTP_404_NOT_FOUND, detail="Esta actividad no existe"
         )
 
-    data = ActivitySchemaResponse.model_validate(activity)
+    data = ActivityResponse.model_validate(activity)
     return {"message": "success", "data": data, "status": 200}
 
 
@@ -111,5 +113,5 @@ async def get_activity_by_name(activity_name: str):
             status_code=status.HTTP_404_NOT_FOUND, detail="esta actividad no existe"
         )
 
-    data = ActivitySchemaResponse.model_validate(activity)
+    data = ActivityResponse.model_validate(activity)
     return {"message": "success", "data": data, "status": 200}
