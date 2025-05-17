@@ -7,7 +7,7 @@ from Application.Schemas.ComponentSchema import ComponentResponse
 
 class PoliticSchemaRequest(BaseModel):
     nombre: str
-    dependencia_id: int
+    dependencia_id: Optional[int] = None
 
     class Config:
         from_attributes = True
