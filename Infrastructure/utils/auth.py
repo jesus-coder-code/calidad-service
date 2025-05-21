@@ -42,3 +42,24 @@ def authenticate_user(username: str, password: str) -> dict:
         raise ValueError("Usuario no encontrado.")
     except Exception as e:
         raise ValueError(f"Error en autenticación: {str(e)}")
+
+
+def register_user(username: str, name: str, password: str) -> dict:
+    client = boto3.client("cognito-idp", region_name=AWS_REGION)
+
+    try:
+        response = client.sign_up(
+            ClientId=CLIENT_ID,
+            SecretHash=get_secret_hash(username),
+            Username=username,
+            Password=password,
+            UserAttributes=[
+                {"Name": "email", "Value": username},
+                {"Name": "name", "Value": name},
+            ],
+        )
+        return response
+    except client.exceptions.UsernameExistsException:
+        raise ValueError("El usuario ya existe.")
+    except Exception as e:
+        raise ValueError(f"Error en el registro: {str(e)}")
