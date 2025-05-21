@@ -1,0 +1,63 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Caches
+*.cache
+*.pyo
+*.pyd
+*.pyc
+*.db
+*.sqlite3
+
+# Environment variables
+.env
+.env.*
+
+# Virtual environment
+venv/
+.venv/
+myenv/
+.myenv/
+ENV/
+env/
+
+# VSCode settings
+.vscode/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# pytest
+.pytest_cache/
+
+# coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# Logs
+*.log
+
+# PyInstaller
+dist/
+build/
+*.spec
+
+# pipenv
+Pipfile.lock
+
+# macOS
+.DS_Store
+
+# IDEs
+.idea/
