@@ -41,3 +41,11 @@ class ResponsibleWithPolitic(BaseModel):
     class Config:
         from_attributes = True
         use_enum_values = True
+
+
+class ResponsibleBasicResponse(BaseModel):
+    id: Optional[int]
+    nombre: str
+
+    class Config:
+        from_attributes = True

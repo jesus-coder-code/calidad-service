@@ -27,9 +27,16 @@ class PoliticSchemaBaseResponse(BaseModel):
 class PoliticSchemaResponse(BaseModel):
     id: Optional[int]
     nombre: str
+    responsable_id: Optional[int]
+    responsable: Optional["ResponsibleBasicResponse"]
     dependencia_id: Optional[int]
     planes: List[ActionPlanSchemaResponse] = []
     componentes: List[ComponentResponse] = []
 
     class Config:
         from_attributes = True
+
+
+from Application.Schemas.ResponsibleSchema import ResponsibleBasicResponse
+
+PoliticSchemaResponse.model_rebuild()
