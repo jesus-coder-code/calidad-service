@@ -22,6 +22,6 @@ class ActionPlan(SQLModel, table=True):
         sa_column=Column(Integer, ForeignKey("politicas.id", ondelete="SET NULL")),
     )
 
-    actividades: List["Activities"] = Relationship(back_populates="plan")
+    actividades: List["Activities"] = Relationship(back_populates="plan")  # relacion
     politica: Optional["Politics"] = Relationship(back_populates="planes")  # type: ignore
     vigencia: Optional["Term"] = Relationship(back_populates="planes")  # type: ignore

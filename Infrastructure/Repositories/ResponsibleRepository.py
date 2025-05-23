@@ -9,7 +9,7 @@ from sqlalchemy.orm import selectinload
 class ResponsibleRepository(IResponsibleRepository):
     async def getAllResponsible(self) -> List[Responsible]:
         async with get_session() as session:
-            statement = select(Responsible).options(selectinload(Responsible.politica))
+            statement = select(Responsible).options(selectinload(Responsible.politicas))
             result = await session.execute(statement)
             return result.scalars().all()
 
@@ -61,7 +61,7 @@ class ResponsibleRepository(IResponsibleRepository):
         async with get_session() as session:
             statement = await session.execute(
                 select(Responsible)
-                .options(selectinload(Responsible.politica))
+                .options(selectinload(Responsible.politicas))
                 .where(Responsible.id == responsible_id)
             )
             existing_responsible = statement.scalar_one_or_none()
@@ -75,7 +75,7 @@ class ResponsibleRepository(IResponsibleRepository):
         async with get_session() as session:
             statement = await session.execute(
                 select(Responsible)
-                .options(selectinload(Responsible.politica))
+                .options(selectinload(Responsible.politicas))
                 .where(Responsible.nombre == responsible_name)
             )
             existing_responsible = statement.scalar_one_or_none()
@@ -89,7 +89,7 @@ class ResponsibleRepository(IResponsibleRepository):
         async with get_session() as session:
             statement = await session.execute(
                 select(Responsible)
-                .options(selectinload(Responsible.politica))
+                .options(selectinload(Responsible.politicas))
                 .where(Responsible.correo == responsible_email)
             )
             existing_responsible = statement.scalar_one_or_none()

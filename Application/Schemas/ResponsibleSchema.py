@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel, EmailStr
 from Application.Schemas.PoliticSchema import PoliticSchemaBaseResponse
 from Domain.Enums.RolEnum import RolEnum
@@ -36,7 +36,7 @@ class ResponsibleWithPolitic(BaseModel):
     telefono: int
     rol: RolEnum
     dependencia_id: Optional[int]
-    politica: Optional[PoliticSchemaBaseResponse]
+    politicas: List[PoliticSchemaBaseResponse]
 
     class Config:
         from_attributes = True

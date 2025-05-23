@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from sqlmodel import SQLModel, Relationship, Field
 from pydantic import EmailStr
 from sqlalchemy import BigInteger, Column, ForeignKey, Integer
@@ -20,6 +20,4 @@ class Responsible(SQLModel, table=True):
     )
 
     dependencia: Optional["Dependencies"] = Relationship(back_populates="responsable")  # type: ignore
-    politica: Optional["Politics"] = Relationship(  # type: ignore
-        back_populates="responsable", sa_relationship_kwargs={"uselist": False}
-    )
+    politicas: List["Politics"] = Relationship(back_populates="responsable")  # type: ignore

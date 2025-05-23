@@ -17,12 +17,10 @@ class Politics(SQLModel, table=True):
     )
     responsable_id: Optional[int] = Field(
         default=None,
-        sa_column=Column(
-            Integer, ForeignKey("responsables.id", ondelete="SET NULL"), unique=True
-        ),
+        sa_column=Column(Integer, ForeignKey("responsables.id", ondelete="SET NULL")),
     )
 
     componentes: List["Components"] = Relationship(back_populates="politica")
     planes: List["ActionPlan"] = Relationship(back_populates="politica")
     dependencia: Optional["Dependencies"] = Relationship(back_populates="politicas")  # type: ignore
-    responsable: Optional["Responsible"] = Relationship(back_populates="politica")  # type: ignore
+    responsable: Optional["Responsible"] = Relationship(back_populates="politicas")  # type: ignore
