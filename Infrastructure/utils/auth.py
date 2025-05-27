@@ -63,3 +63,24 @@ def register_user(username: str, name: str, password: str) -> dict:
         raise ValueError("El usuario ya existe.")
     except Exception as e:
         raise ValueError(f"Error en el registro: {str(e)}")
+
+
+def confirm_user(username: str, confirmation_code: str) -> dict:
+    client = boto3.client("cognito-idp", region_name=AWS_REGION)
+
+    try:
+        response = client.confirm_sign_up(
+            ClientId=CLIENT_ID,
+            SecretHash=get_secret_hash(username),
+            Username=username,
+            ConfirmationCode=confirmation_code,
+        )
+        return response
+    except client.exceptions.CodeMismatchException:
+        raise ValueError("El código de confirmación es incorrecto.")
+    except client.exceptions.ExpiredCodeException:
+        raise ValueError("El código de confirmación ha expirado.")
+    except client.exceptions.UserNotFoundException:
+        raise ValueError("Usuario no encontrado.")
+    except Exception as e:
+        raise ValueError(f"Error al confirmar usuario: {str(e)}")

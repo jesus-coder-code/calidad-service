@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
-from Application.Schemas.AuthSchema import AuthRequest, RegisterRequest
-from Infrastructure.utils.auth import authenticate_user, register_user
+from Application.Schemas.AuthSchema import AuthRequest, RegisterRequest, ConfirmRequest
+from Infrastructure.utils.auth import authenticate_user, register_user, confirm_user
 from Infrastructure.utils.verifyApiKey import verify_api_key
 
 router = APIRouter()
@@ -31,5 +31,14 @@ async def register(auth_request: RegisterRequest):
             "message": "Usuario registrado correctamente. Confirme por email.",
             "response": response,
         }
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@router.post("/Auth/Confirm", dependencies=[Depends(verify_api_key)])
+async def confirm_email(confirm_request: ConfirmRequest):
+    try:
+        confirm_user(confirm_request.email, confirm_request.code)
+        return {"message": "Cuenta confirmada exitosamente."}
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))

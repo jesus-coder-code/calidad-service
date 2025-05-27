@@ -14,3 +14,8 @@ class RegisterRequest(BaseModel):
     name: str
     email: EmailStr
     password: str
+
+
+class ConfirmRequest(BaseModel):
+    email: EmailStr
+    code: str
