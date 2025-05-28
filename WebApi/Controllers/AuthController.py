@@ -1,6 +1,20 @@
-from fastapi import APIRouter, Depends, HTTPException
-from Application.Schemas.AuthSchema import AuthRequest, RegisterRequest, ConfirmRequest
-from Infrastructure.utils.auth import authenticate_user, register_user, confirm_user
+from fastapi import APIRouter, Depends, HTTPException, Header
+from Application.Schemas.AuthSchema import (
+    AuthRequest,
+    RegisterRequest,
+    ConfirmRequest,
+    PasswordResetRequest,
+    ConfirmPasswordResetRequest,
+    ChangePasswordRequest,
+)
+from Infrastructure.utils.auth import (
+    authenticate_user,
+    register_user,
+    confirm_user,
+    send_password_reset_code,
+    confirm_new_password,
+    change_password,
+)
 from Infrastructure.utils.verifyApiKey import verify_api_key
 
 router = APIRouter()
@@ -42,3 +56,42 @@ async def confirm_email(confirm_request: ConfirmRequest):
         return {"message": "Cuenta confirmada exitosamente."}
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+
+@router.post("/Auth/Recover", dependencies=[Depends(verify_api_key)])
+async def recover_password(reset_request: PasswordResetRequest):
+    try:
+        send_password_reset_code(reset_request.email)
+        return {"message": "Código de recuperación enviado al correo."}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@router.post("/Auth/Reset", dependencies=[Depends(verify_api_key)])
+async def reset_password(confirm_request: ConfirmPasswordResetRequest):
+    try:
+        confirm_new_password(
+            username=confirm_request.email,
+            confirmation_code=confirm_request.code,
+            new_password=confirm_request.new_password,
+        )
+        return {"message": "Contraseña restablecida correctamente."}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+"""@router.post("/Auth/ChangePassword", dependencies=[Depends(verify_api_key)])
+async def change_user_password(
+    request: ChangePasswordRequest,
+    authorization: str = Header(..., alias="Authorization"),
+):
+    try:
+        access_token = authorization.replace("Bearer ", "")
+        change_password(
+            access_token=access_token,
+            old_password=request.old_password,
+            new_password=request.new_password,
+        )
+        return {"message": "Contraseña actualizada correctamente."}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))"""

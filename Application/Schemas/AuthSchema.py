@@ -19,3 +19,18 @@ class RegisterRequest(BaseModel):
 class ConfirmRequest(BaseModel):
     email: EmailStr
     code: str
+
+
+class PasswordResetRequest(BaseModel):
+    email: EmailStr
+
+
+class ConfirmPasswordResetRequest(BaseModel):
+    email: EmailStr
+    code: str
+    new_password: str
+
+
+class ChangePasswordRequest(BaseModel):
+    old_password: str
+    new_password: str

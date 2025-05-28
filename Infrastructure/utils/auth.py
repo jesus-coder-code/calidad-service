@@ -84,3 +84,61 @@ def confirm_user(username: str, confirmation_code: str) -> dict:
         raise ValueError("Usuario no encontrado.")
     except Exception as e:
         raise ValueError(f"Error al confirmar usuario: {str(e)}")
+
+
+def send_password_reset_code(username: str) -> dict:
+    client = boto3.client("cognito-idp", region_name=AWS_REGION)
+
+    try:
+        response = client.forgot_password(
+            ClientId=CLIENT_ID,
+            SecretHash=get_secret_hash(username),
+            Username=username,
+        )
+        return response
+    except client.exceptions.UserNotFoundException:
+        raise ValueError("Usuario no encontrado.")
+    except Exception as e:
+        raise ValueError(f"Error al enviar el código de recuperación: {str(e)}")
+
+
+def confirm_new_password(
+    username: str, confirmation_code: str, new_password: str
+) -> dict:
+    client = boto3.client("cognito-idp", region_name=AWS_REGION)
+
+    try:
+        response = client.confirm_forgot_password(
+            ClientId=CLIENT_ID,
+            SecretHash=get_secret_hash(username),
+            Username=username,
+            ConfirmationCode=str(confirmation_code),  # asegurar que es string
+            Password=new_password,
+        )
+        return response
+    except client.exceptions.CodeMismatchException:
+        raise ValueError("Código inválido.")
+    except client.exceptions.ExpiredCodeException:
+        raise ValueError("Código expirado.")
+    except Exception as e:
+        raise ValueError(f"Error al confirmar nueva contraseña: {str(e)}")
+
+
+def change_password(access_token: str, old_password: str, new_password: str) -> dict:
+    client = boto3.client("cognito-idp", region_name=AWS_REGION)
+
+    try:
+        response = client.change_password(
+            PreviousPassword=old_password,
+            ProposedPassword=new_password,
+            AccessToken=access_token,
+        )
+        return response
+    except client.exceptions.NotAuthorizedException:
+        raise ValueError("Token inválido o sesión expirada.")
+    except client.exceptions.InvalidPasswordException:
+        raise ValueError("Nueva contraseña no cumple con los requisitos.")
+    except client.exceptions.LimitExceededException:
+        raise ValueError("Demasiados intentos. Intenta más tarde.")
+    except Exception as e:
+        raise ValueError(f"Error al cambiar la contraseña: {str(e)}")
