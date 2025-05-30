@@ -29,6 +29,7 @@ class Activities(SQLModel, table=True):
         default=None,
         sa_column=Column(Integer, ForeignKey("subcomponentes.id", ondelete="SET NULL")),
     )
+    procesos: str
 
     evidencias: list["Evidences"] = Relationship(back_populates="actividad")
     plan: Optional["ActionPlan"] = Relationship(back_populates="actividades")  # type: ignore

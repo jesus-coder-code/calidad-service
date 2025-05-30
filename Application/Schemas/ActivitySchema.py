@@ -17,6 +17,7 @@ class ActivityRequest(BaseModel):
     indicador_producto: str
     plan_id: int
     subcomponent_id: int
+    procesos: Optional[str] = None
 
     class Config:
         from_attributes = True
@@ -35,6 +36,7 @@ class ActivityResponse(BaseModel):
     indicador_producto: str
     plan_id: Optional[int]
     subcomponent_id: Optional[int]
+    procesos: Optional[str]
     evidencias: List[EvidenceSchemaResponse] = []
 
     @computed_field
@@ -59,6 +61,7 @@ class ActivityBaseResponse(BaseModel):
     indicador_producto: str
     plan_id: Optional[int]
     subcomponent_id: Optional[int]
+    procesos: Optional[str]
 
     class Config:
         from_attributes = True
