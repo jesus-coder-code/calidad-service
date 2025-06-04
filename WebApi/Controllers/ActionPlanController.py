@@ -77,7 +77,7 @@ async def update_plan(plan_id: int, plan: ActionPlanSchema):
 
 
 @router.delete(
-    "/actionPlan/DelecteActionPlan/{plan_id}", dependencies=[Depends(verify_api_key)]
+    "/actionplan/DeleteActionPlan/{plan_id}", dependencies=[Depends(verify_api_key)]
 )
 async def delete_plan(plan_id: int):
     actionPlanRepository = ActionPlanRepository()
@@ -111,7 +111,7 @@ async def get_action_plan_by_id(plan_id: int):
 
 
 @router.get(
-    "/actionPlan/GetActionPlanByName/{plan_name}",
+    "/actionplan/GetActionPlanByName/{plan_name}",
     dependencies=[Depends(verify_api_key)],
 )
 async def get_plan_by_name(plan_name: str):

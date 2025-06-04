@@ -17,7 +17,7 @@ router = APIRouter()
 
 
 @router.post(
-    "/upload/{actividad_id}",
+    "/evidence/upload/{actividad_id}",
     dependencies=[Depends(verify_api_key)],
     response_model=List[EvidenceSchemaResponse],
 )
@@ -56,7 +56,8 @@ async def upload_files(
 
 
 @router.get(
-    "/download/{actividad_id}/{filename}", dependencies=[Depends(verify_api_key)]
+    "/evidence/download/{actividad_id}/{filename}",
+    dependencies=[Depends(verify_api_key)],
 )
 async def download_file(actividad_id: int, filename: str):
     try:
