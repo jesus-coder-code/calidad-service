@@ -53,6 +53,12 @@ async def create_responsible(responsible: ResponsibleSchemaRequest):
     responsible_model = Responsible(**responsible.model_dump())
     use_case = CreateResponsibleUseCase(responsibleRepository)
     created_responsible = await use_case.execute(responsible_model)
+
+    if created_responsible is False:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="ya existe un usuario registrado con este correo",
+        )
     return created_responsible
 
 

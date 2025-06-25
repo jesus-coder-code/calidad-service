@@ -7,7 +7,7 @@ class EvidenceSchemaResponse(BaseModel):
     id: Optional[int]
     nombre_archivo: str
     url_archivo: str
-    avances: int
+    avances: float
     created_at: date
     actividad_id: int
 

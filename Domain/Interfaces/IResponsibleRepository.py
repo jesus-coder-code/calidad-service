@@ -9,7 +9,7 @@ class IResponsibleRepository(ABC):
         pass
 
     @abstractmethod
-    async def createResponsible(self, responsible: Responsible) -> Responsible:
+    async def createResponsible(self, responsible: Responsible) -> Responsible | bool:
         pass
 
     @abstractmethod

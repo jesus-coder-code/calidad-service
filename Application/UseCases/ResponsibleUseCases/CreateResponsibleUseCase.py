@@ -6,5 +6,5 @@ class CreateResponsibleUseCase:
     def __init__(self, responsibleRepository: IResponsibleRepository):
         self.repository = responsibleRepository
 
-    async def execute(self, responsible: Responsible) -> Responsible:
+    async def execute(self, responsible: Responsible) -> Responsible | bool:
         return await self.repository.createResponsible(responsible)

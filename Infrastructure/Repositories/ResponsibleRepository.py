@@ -13,8 +13,17 @@ class ResponsibleRepository(IResponsibleRepository):
             result = await session.execute(statement)
             return result.scalars().all()
 
-    async def createResponsible(self, responsible: Responsible) -> Responsible:
+    async def createResponsible(self, responsible: Responsible) -> Responsible | bool:
         async with get_session() as session:
+            statement = select(Responsible).where(
+                Responsible.correo == responsible.correo
+            )
+            result = await session.execute(statement)
+            existing_responsible = result.scalar_one_or_none()
+
+            if existing_responsible:
+                return False
+
             session.add(responsible)
             await session.commit()
             await session.refresh(responsible)

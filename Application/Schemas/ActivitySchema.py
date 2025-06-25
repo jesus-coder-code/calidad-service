@@ -41,7 +41,7 @@ class ActivityResponse(BaseModel):
 
     @computed_field
     @property
-    def progreso_total(self) -> int:
+    def progreso_total(self) -> float:
         return sum(e.avances for e in self.evidencias)
 
     class Config:
@@ -71,7 +71,7 @@ class ActivityBaseResponse(BaseModel):
 class ActivitySummaryResponse(ActivityResponse):
     evidencias: list = Field(exclude=True)
 
-    @computed_field(return_type=int)
+    @computed_field(return_type=float)
     @property
-    def progreso_total(self) -> int:
+    def progreso_total(self) -> float:
         return sum(e.avances for e in self.evidencias)
