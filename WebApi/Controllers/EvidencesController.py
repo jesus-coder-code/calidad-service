@@ -23,7 +23,7 @@ router = APIRouter()
 )
 async def upload_files(
     actividad_id: int,
-    avances: int = Form(...),
+    avances: float = Form(...),
     created_at: date = Form(...),
     files: List[UploadFile] = File(...),
 ):
