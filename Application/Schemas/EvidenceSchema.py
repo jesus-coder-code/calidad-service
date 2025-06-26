@@ -13,3 +13,11 @@ class EvidenceSchemaResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class UpdateEvidence(BaseModel):
+    created_at: date
+    avances: float
+
+    class Config:
+        from_attributes = True

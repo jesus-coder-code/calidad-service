@@ -55,3 +55,29 @@ def download_file_from_s3(
         return response["Body"].read()
     except (BotoCoreError, ClientError) as e:
         raise Exception(f"Error al descargar archivo: {str(e)}")
+
+
+def delete_file_from_s3(
+    actividad_id: int, filename: str, folder: str = BASE_FOLDER
+) -> None:
+    key = f"{folder.rstrip('/')}/actividad_{actividad_id}/{filename}"
+    try:
+        s3_client.delete_object(Bucket=S3_BUCKET_NAME, Key=key)
+    except (BotoCoreError, ClientError) as e:
+        raise Exception(f"Error al eliminar archivo del bucket: {str(e)}")
+
+
+def delete_all_files_from_activity(
+    actividad_id: int, folder: str = BASE_FOLDER
+) -> None:
+    prefix = f"{folder.rstrip('/')}/actividad_{actividad_id}/"
+    try:
+        # Listar todos los objetos con ese prefijo
+        response = s3_client.list_objects_v2(Bucket=S3_BUCKET_NAME, Prefix=prefix)
+
+        if "Contents" in response:
+            # Obtener las claves (keys) de los archivos a eliminar
+            keys = [{"Key": obj["Key"]} for obj in response["Contents"]]
+            s3_client.delete_objects(Bucket=S3_BUCKET_NAME, Delete={"Objects": keys})
+    except (BotoCoreError, ClientError) as e:
+        raise Exception(f"Error al eliminar archivos de actividad del bucket: {str(e)}")

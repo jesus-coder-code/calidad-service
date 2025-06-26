@@ -31,6 +31,8 @@ class Activities(SQLModel, table=True):
     )
     procesos: str
 
-    evidencias: list["Evidences"] = Relationship(back_populates="actividad")
+    evidencias: list["Evidences"] = Relationship(
+        back_populates="actividad", sa_relationship_kwargs={"cascade": "all, delete"}
+    )
     plan: Optional["ActionPlan"] = Relationship(back_populates="actividades")  # type: ignore
     subcomponente: Optional["Subcomponents"] = Relationship(back_populates="actividades")  # type: ignore

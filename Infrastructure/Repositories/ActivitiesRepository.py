@@ -7,6 +7,7 @@ from Domain.Interfaces.IActivitiesRepository import IActivitiesRepository
 from Domain.Entities.Term import Term
 from Domain.Entities.ActionPlan import ActionPlan
 from sqlalchemy.orm import selectinload
+from Infrastructure.utils.evidence import delete_all_files_from_activity
 
 
 class ActivitiesRepository(IActivitiesRepository):
@@ -64,6 +65,14 @@ class ActivitiesRepository(IActivitiesRepository):
 
             if activity is None:
                 return False
+
+            try:
+                delete_all_files_from_activity(activity_id)
+
+            except Exception as e:
+                print(
+                    f"error al eliminar los archivos relacionados a la actividad: {str(e)}"
+                )
 
             await session.delete(activity)
             await session.commit()

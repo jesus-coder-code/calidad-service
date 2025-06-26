@@ -1,9 +1,15 @@
 from typing import List
-from fastapi import APIRouter, Depends, UploadFile, File, HTTPException, Form
+from fastapi import APIRouter, Depends, UploadFile, File, HTTPException, Form, status
 from fastapi.responses import StreamingResponse
-from Application.Schemas.EvidenceSchema import EvidenceSchemaResponse
+from Application.Schemas.EvidenceSchema import EvidenceSchemaResponse, UpdateEvidence
 from Application.UseCases.EvidencesUseCases.CreateEvidenceUseCase import (
     CreateEvidenceUseCase,
+)
+from Application.UseCases.EvidencesUseCases.UpdateEvidenceUseCase import (
+    UpdateEvidenceUseCase,
+)
+from Application.UseCases.EvidencesUseCases.DeleteEvidenceUseCase import (
+    DeleteEvidencesUseCase,
 )
 from Domain.Entities.Evidences import Evidences
 from Infrastructure.Repositories.EvidencesRepository import EvidencesRepository
@@ -69,3 +75,37 @@ async def download_file(actividad_id: int, filename: str):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.put("/evidence/update/{evidence_id}", dependencies=[Depends(verify_api_key)])
+async def update_evidence(evidence_id: int, evidence: UpdateEvidence):
+    evidencesRepository = EvidencesRepository()
+    use_case = UpdateEvidenceUseCase(evidencesRepository)
+
+    update_evidence = await use_case.execute(
+        evidence_id, evidence.created_at, evidence.avances
+    )
+
+    if update_evidence is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="esta evidencia a actualizar no existe",
+        )
+
+    return {"message": "evidencia actualizada correctamente"}
+
+
+@router.delete("/evidence/delete/{evidence_id}", dependencies=[Depends(verify_api_key)])
+async def delete_evidence(evidence_id: int):
+    evidencesRepository = EvidencesRepository()
+    use_case = DeleteEvidencesUseCase(evidencesRepository)
+
+    success = await use_case.execute(evidence_id)
+
+    if success is False:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="esta evidencia a eliminar no existe",
+        )
+
+    return {"message": "evidencia eliminada correctamente"}
