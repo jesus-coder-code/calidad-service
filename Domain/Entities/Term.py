@@ -12,5 +12,10 @@ class Term(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     vigencia: int = Field(unique=True)
     estado: TermEnum = Field(default=TermEnum.ABIERTO)
+    """nombrevigencia: str = Field(
+        default="N/A",
+        nullable=False,
+        sa_column_kwargs={"server_default": "N/A"},
+    )"""
 
     planes: List["ActionPlan"] = Relationship(back_populates="vigencia")
