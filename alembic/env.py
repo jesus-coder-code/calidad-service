@@ -1,13 +1,15 @@
 from logging.config import fileConfig
-import sys
 import os
-from dotenv import load_dotenv
+import sys
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
-import sqlmodel
+
 from alembic import context
 
+# import sqlmodel
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from Domain.Entities import (
     ActionPlan,
     Activities,
@@ -20,8 +22,8 @@ from Domain.Entities import (
     Term,
 )
 from sqlmodel import SQLModel
+import sqlmodel
 
-load_dotenv()
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
@@ -69,9 +71,12 @@ def run_migrations_offline() -> None:
 
 
 def render_item(type_, obj, autogen_context):
+    """Aplica renderizado personalizado para tipos específicos."""
     if type_ == "type" and isinstance(obj, sqlmodel.sql.sqltypes.AutoString):
         autogen_context.imports.add("import sqlmodel")
         return "sqlmodel.sql.sqltypes.AutoString()"
+
+    # Delegate default rendering for other types
     return False
 
 

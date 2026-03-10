@@ -34,3 +34,8 @@ class ConfirmPasswordResetRequest(BaseModel):
 class ChangePasswordRequest(BaseModel):
     old_password: str
     new_password: str
+
+
+class RefreshRequest(BaseModel):
+    username: str
+    refresh_token: str

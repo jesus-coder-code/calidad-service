@@ -5,6 +5,8 @@ from Domain.Entities.Responsible import Responsible
 from Infrastructure.DB.Database import get_session
 from sqlalchemy.orm import selectinload
 
+from Infrastructure.utils.auth import delete_user_cognito
+
 
 class ResponsibleRepository(IResponsibleRepository):
     async def getAllResponsible(self) -> List[Responsible]:
@@ -62,8 +64,14 @@ class ResponsibleRepository(IResponsibleRepository):
             if responsible is None:
                 return False
 
+            try:
+                delete_user_cognito(responsible.correo)
+            except Exception as e:
+                raise ValueError(f"No se pudo eliminar en Cognito: {str(e)}")
+
             await session.delete(responsible)
             await session.commit()
+
             return True
 
     async def getResposibleById(self, responsible_id: int) -> Responsible:

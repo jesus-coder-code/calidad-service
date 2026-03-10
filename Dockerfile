@@ -1,10 +1,10 @@
-FROM python:alpine
+FROM python:3.13-alpine
 
 # Establece el directorio de trabajo
 WORKDIR /app/calidad-service
 
 # Instala dependencias del sistema necesarias para compilar paquetes de Python
-RUN apk add --no-cache gcc musl-dev libffi-dev 
+RUN apk add --no-cache gcc musl-dev libffi-dev postgresql-dev
 
 # Copia el archivo de dependencias
 COPY requirements.txt .

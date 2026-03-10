@@ -10,6 +10,9 @@ load_dotenv()
 CLIENT_ID = os.getenv("COGNITO_CLIENT_ID")
 CLIENT_SECRET = os.getenv("COGNITO_CLIENT_SECRET")
 AWS_REGION = os.getenv("AWS_REGION", "us-east-1")
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_KEY")
+USER_POOL_ID = os.getenv("COGNITO_USER_POOL_ID")
 
 
 def get_secret_hash(username: str) -> str:
@@ -84,6 +87,24 @@ def confirm_user(username: str, confirmation_code: str) -> dict:
         raise ValueError("Usuario no encontrado.")
     except Exception as e:
         raise ValueError(f"Error al confirmar usuario: {str(e)}")
+
+
+def delete_user_cognito(username: str) -> bool:
+    client = boto3.client(
+        "cognito-idp",
+        region_name=AWS_REGION,
+        aws_access_key_id=AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+    )
+
+    try:
+        client.admin_delete_user(UserPoolId=USER_POOL_ID, Username=username)
+        return True
+    except client.exceptions.UserNotFoundException:
+        # Si ya no existe en Cognito no hay problema
+        return True
+    except Exception as e:
+        raise ValueError(f"Error al eliminar usuario en Cognito: {str(e)}")
 
 
 def send_password_reset_code(username: str) -> dict:

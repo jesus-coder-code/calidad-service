@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Header
 from Application.Schemas.AuthSchema import (
     AuthRequest,
+    RefreshRequest,
     RegisterRequest,
     ConfirmRequest,
     PasswordResetRequest,
