@@ -1,30 +1,24 @@
-name: SonarQube Cloud Analysis
-
+name: SonarQube Cloud
 on:
   push:
-    branches:
-      - main
-      - master
+    branches: [main]
   pull_request:
     types: [opened, synchronize, reopened]
 
 jobs:
-  sonarcloud:
-    name: SonarQube Cloud
+  sonar:
+    name: Analyze
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Desactiva shallow clone para un análisis completo
+          fetch-depth: 0   # necesario para que Sonar analice bien el historial
 
       - name: SonarQube Cloud Scan
-        uses: SonarSource/sonarqube-scan-action@v3
+        uses: SonarSource/sonarqube-scan-action@v6
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: https://sonarcloud.io
         with:
           args: >
-            -Dsonar.host.url=https://sonarcloud.io
             -Dsonar.organization=jesus-daniel-de-avila
             -Dsonar.projectKey=calidad-service
