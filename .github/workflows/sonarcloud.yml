@@ -20,5 +20,5 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.organization=jesus-daniel-de-avila
+            -Dsonar.organization=jesus-coder-code
             -Dsonar.projectKey=calidad-service
